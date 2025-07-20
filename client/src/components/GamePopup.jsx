@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { CompareContext } from '../contexts/CompareContext';
 import './css/GamePopup.css';
 
 const GamePopup = ({ game, onClose }) => {
+  const { addToCompare } = useContext(CompareContext);
   const [activeTab, setActiveTab] = useState(0);
   const releaseDate = game.first_release_date
     ? new Date(game.first_release_date * 1000).toLocaleDateString()
@@ -11,6 +13,22 @@ const GamePopup = ({ game, onClose }) => {
   const [loading, setLoading] = useState(true);
   const [metascore, setMetascore] = useState('N/A');
   const coverUrl = game.cover?.url ? `https:${game.cover.url.replace('t_thumb', 't_cover_big')}` : null;
+
+  const handleCompareClick = () => {
+  const steamAppId = steamSpyData?.appid || game.steam_appid || game.appid || null;
+
+  if (!steamAppId) {
+    alert("No Steam App ID found for this game.");
+    return;
+  }
+
+  addToCompare({
+    steamAppId,
+    game
+  });
+
+  alert("Game added to compare list!");
+};
 
   useEffect(() => {
     const fetchSteamSpyData = async () => {
@@ -148,6 +166,17 @@ const GamePopup = ({ game, onClose }) => {
           )}
         </div>
       )
+    }, 
+    {
+        name: 'Compare',
+        content: (
+            <div className="tab-content">
+                <p>Want to Compare this game?</p>
+                <button onClick={handleCompareClick} className="compare-button">
+                    Compare Game
+                </button>
+            </div>
+        )
     }
   ];
 

@@ -4,6 +4,7 @@ export default function Navbar({ setCurrentPage }) {
   const navItems = [
     { key: "home", label: "Home" },
     { key: "search", label: "Search" },
+    { key: "compare", label: "Compare" },
     { key: "faq", label: "FAQ" },
     { key: "review", label: "Leave a Review" },
   ];

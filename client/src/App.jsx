@@ -4,6 +4,7 @@ import HomePage from "./pages/HomePage";
 import FAQPage from "./pages/FAQPage";
 import ReviewPage from "./pages/ReviewPage";
 import SearchPage from "./pages/SearchPage";
+import ComparePage from "./pages/ComparePage";
 
 const App = () => {
   const [currentPage, setCurrentPage] = useState('home');
@@ -29,6 +30,8 @@ const App = () => {
         return <FAQPage />; // Your FAQ component
       case 'review':
         return <ReviewPage />; // Your review component
+      case 'compare':
+        return <ComparePage />
       default:
         return (
           <HomePage 
