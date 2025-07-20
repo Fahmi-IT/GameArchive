@@ -1,0 +1,164 @@
+.game-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(10, 10, 10, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.game-popup {
+  background: #111;
+  color: #fff;
+  border-radius: 1rem;
+  padding: 2rem;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 0 25px rgba(0, 212, 255, 0.3);
+  position: relative;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.popup-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  color: white;
+  font-size: 1.5rem;
+  border: none;
+  cursor: pointer;
+}
+
+.popup-cover {
+  width: 100%;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.popup-title {
+  font-size: 1.75rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.popup-info > div {
+  margin: 0.5rem 0;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+.popup-tabs-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 200px;
+}
+
+.tab-content-area {
+  flex: 1;
+  padding: 15px 0;
+  overflow-y: auto;
+}
+
+.tab-content {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.tab-navigation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  padding: 15px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: auto;
+}
+
+.tab-orb {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  background-color: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.tab-orb:hover {
+  border-color: rgba(255, 255, 255, 0.7);
+  transform: scale(1.2);
+}
+
+.tab-orb.active {
+  background-color: #007bff;
+  border-color: #007bff;
+  box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+}
+
+.tab-orb.active:hover {
+  background-color: #0056b3;
+  border-color: #0056b3;
+}
+
+/* Optional: Add tooltip on hover */
+.tab-orb::after {
+  content: attr(title);
+  position: absolute;
+  bottom: 150%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 1000;
+}
+
+.tab-orb:hover::after {
+  opacity: 1;
+}
+
+/* Adjust existing popup info styles for better tab layout */
+.popup-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.popup-info > div {
+  padding: 4px 0;
+}
+
+.steamspy-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.steamspy-info > div {
+  padding: 4px 0;
+}

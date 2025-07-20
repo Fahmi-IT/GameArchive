@@ -1,0 +1,124 @@
+/* Navbar Styles - Minimalist Game Browsing Website */
+
+/* Main navigation container */
+nav {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  padding: 1rem 2rem;
+}
+
+/* Navigation list styling */
+nav ul {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Navigation items */
+nav li {
+  position: relative;
+}
+
+/* Navigation buttons */
+nav button {
+  background: none;
+  border: none;
+  color: #e2e8f0;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
+  font-size: 0.875rem;
+}
+
+/* Hover effects */
+nav button:hover {
+  color: #00d4ff;
+  background: rgba(0, 212, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+/* Active state indicator */
+nav button::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #00d4ff, #8b5cf6);
+  transform: translateX(-50%);
+  transition: width 0.3s ease;
+  border-radius: 1px;
+}
+
+nav button:hover::after {
+  width: 80%;
+}
+
+/* Focus states for accessibility */
+nav button:focus {
+  outline: 2px solid #00d4ff;
+  outline-offset: 2px;
+  color: #00d4ff;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  nav {
+    padding: 1rem;
+  }
+  
+  nav ul {
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  
+  nav button {
+    font-size: 0.8rem;
+    padding: 0.5rem 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  nav ul {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  nav button {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+/* Smooth animations */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+nav {
+  animation: slideIn 0.5s ease-out;
+}

@@ -1,0 +1,297 @@
+/* Homepage Styles - Game Stats Hub */
+
+/* Main homepage container */
+.homepage {
+  min-height: calc(95vh - 80px); /* Account for navbar height */
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 2rem 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Animated background elements */
+.homepage::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at 30% 30%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
+              radial-gradient(circle at 70% 70%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
+  animation: backgroundFloat 20s ease-in-out infinite;
+  z-index: 0;
+}
+
+/* Main heading */
+.homepage h1 {
+  font-size: 3.5rem;
+  font-weight: 800;
+  color: #f8fafc;
+  margin-bottom: 2rem;
+  z-index: 1;
+  position: relative;
+  text-shadow: 0 4px 20px rgba(0, 212, 255, 0.3);
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+}
+
+/* Gaming emoji styling */
+.homepage h1 .game-icon {
+  display: inline-block;
+  animation: bounce 2s ease-in-out infinite;
+  margin-right: 0.5rem;
+  font-size: 4rem;
+  filter: drop-shadow(0 4px 10px rgba(0, 212, 255, 0.4));
+}
+
+/* Subtitle paragraph */
+.homepage p {
+  font-size: 1.25rem;
+  color: #cbd5e1;
+  max-width: 600px;
+  line-height: 1.6;
+  margin: 0 auto 3rem auto;
+  z-index: 1;
+  position: relative;
+  font-weight: 400;
+  opacity: 0.9;
+}
+
+/* Search container */
+.search-container {
+  position: relative;
+  max-width: 600px;
+  width: 100%;
+  margin: 0 auto;
+  z-index: 1;
+}
+
+/* Search form */
+.search-form {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: rgba(15, 23, 42, 0.8);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50px;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.search-form:focus-within {
+  border-color: #00d4ff;
+  box-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+/* Search input */
+.search-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 1.25rem 1.5rem;
+  font-size: 1.1rem;
+  color: #f8fafc;
+  placeholder-color: #64748b;
+}
+
+.search-input::placeholder {
+  color: #64748b;
+  opacity: 0.8;
+}
+
+/* Search button */
+.search-button {
+  background: linear-gradient(45deg, #00d4ff, #8b5cf6);
+  border: none;
+  padding: 1.25rem 2rem;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  font-size: 0.9rem;
+}
+
+.search-button:hover {
+  background: linear-gradient(45deg, #0ea5e9, #7c3aed);
+  transform: scale(1.05);
+}
+
+.search-button:active {
+  transform: scale(0.98);
+}
+
+/* Search icon */
+.search-icon {
+  margin-right: 0.5rem;
+  font-size: 1.1rem;
+}
+
+/* Highlight text gradient */
+.homepage .highlight {
+  background: linear-gradient(45deg, #00d4ff, #8b5cf6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 700;
+}
+
+/* Floating particles effect */
+.homepage::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(2px 2px at 20px 30px, rgba(255, 255, 255, 0.15), transparent),
+    radial-gradient(2px 2px at 40px 70px, rgba(0, 212, 255, 0.2), transparent),
+    radial-gradient(1px 1px at 90px 40px, rgba(139, 92, 246, 0.2), transparent),
+    radial-gradient(1px 1px at 130px 80px, rgba(255, 255, 255, 0.1), transparent);
+  background-size: 200px 100px;
+  animation: sparkle 15s linear infinite;
+  z-index: 0;
+}
+
+/* Animations */
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes backgroundFloat {
+  0%, 100% {
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    transform: rotate(180deg) scale(1.1);
+  }
+}
+
+@keyframes sparkle {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Content animation on load */
+.homepage h1 {
+  animation: fadeInUp 1s ease-out;
+}
+
+.homepage p {
+  animation: fadeInUp 1s ease-out 0.3s both;
+}
+
+.search-container {
+  animation: fadeInUp 1s ease-out 0.6s both;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .homepage {
+    padding: 2rem 1rem;
+  }
+  
+  .homepage h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .homepage h1 .game-icon {
+    font-size: 3rem;
+  }
+  
+  .homepage p {
+    font-size: 1.1rem;
+    max-width: 90%;
+    margin-bottom: 2rem;
+  }
+  
+  .search-container {
+    max-width: 90%;
+  }
+  
+  .search-form {
+    flex-direction: column;
+    border-radius: 20px;
+  }
+  
+  .search-input {
+    padding: 1rem;
+    font-size: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .search-button {
+    width: 100%;
+    padding: 1rem;
+    border-radius: 0 0 20px 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .homepage h1 {
+    font-size: 2rem;
+    line-height: 1.2;
+  }
+  
+  .homepage h1 .game-icon {
+    font-size: 2.5rem;
+    display: block;
+    margin: 0 0 0.5rem 0;
+  }
+  
+  .homepage p {
+    font-size: 1rem;
+  }
+}
+
+/* Dark mode enhancement */
+@media (prefers-color-scheme: dark) {
+  .homepage {
+    background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .homepage h1 {
+    color: #ffffff;
+    text-shadow: none;
+  }
+  
+  .homepage p {
+    color: #e2e8f0;
+  }
+}

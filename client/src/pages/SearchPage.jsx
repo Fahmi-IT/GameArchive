@@ -1,6 +1,8 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import GameSearch from '../components/GameSearch';
 import GameCard from '../components/GameCard';
+import GamePopup from '../components/GamePopup'; // ← make sure this exists
+import "./css/SearchPage.css";
 
 const ITEMS_PER_PAGE = 5;
 
@@ -20,17 +22,32 @@ function longestCommonSubsequence(a, b) {
   return dp[m][n];
 }
 
-const SearchPage = () => {
+const SearchPage = ({ initialSearchQuery, clearInitialSearchQuery }) => {
   const [results, setResults] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [sortType, setSortType] = useState('rating');
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedGame, setSelectedGame] = useState(null);
 
   const handleResults = (games, query) => {
     setResults(games);
     setSearchQuery(query);
     setCurrentPage(1);
   };
+
+  const handleCardClick = (game) => {
+    setSelectedGame(game); // ← Show popup
+  };
+
+  const closePopup = () => {
+    setSelectedGame(null); // ← Close popup
+  };
+
+  useEffect(() => {
+    if (initialSearchQuery && clearInitialSearchQuery) {
+      setTimeout(() => clearInitialSearchQuery(), 100);
+    }
+  }, [initialSearchQuery, clearInitialSearchQuery]);
 
   const sortedResults = useMemo(() => {
     const sorted = [...results];
@@ -63,49 +80,74 @@ const SearchPage = () => {
   }, [results, sortType, searchQuery]);
 
   return (
-    <div className="p-4">
-      <h1 className="text-3xl font-bold mb-4">🎮 Game Stats Dashboard</h1>
-      <GameSearch onResults={(games, query) => handleResults(games, query)} />
-      <div className="mb-4">
-        <label htmlFor="sort" className="mr-2 font-semibold">Sort by:</label>
-        <select
-          id="sort"
-          value={sortType}
-          onChange={(e) => setSortType(e.target.value)}
-          className="border rounded p-1"
-        >
-          <option value="rating">Aggregated Rating</option>
-          <option value="release">Release Date</option>
-          <option value="similarity">Title Similarity</option>
-        </select>
+    <div className="search-page">
+      <div className="search-results-container">
+        <h2 className="search-title">
+          <span className="controller-icon">🎮</span>
+          Search Games
+        </h2>
+
+        <GameSearch 
+          onResults={handleResults} 
+          initialQuery={initialSearchQuery}
+        />
+
+        <div className="sort-container">
+          <label htmlFor="sort">Sort by:</label>
+          <select
+            id="sort"
+            value={sortType}
+            onChange={(e) => setSortType(e.target.value)}
+          >
+            <option value="rating">Aggregated Rating</option>
+            <option value="release">Release Date</option>
+            <option value="similarity">Title Similarity</option>
+          </select>
+        </div>
+
+        {sortedResults.length === 0 ? (
+          <p className="no-results">No results to show.</p>
+        ) : (
+          <>
+            <div className="games-grid">
+              {currentItems.map((game, index) => (
+                <div key={game.id || index} className="game-card">
+                  <GameCard game={game} onClick={() => handleCardClick(game)} />
+                </div>
+              ))}
+            </div>
+
+            <div className="pagination-container">
+              <button
+                className="pagination-button"
+                onClick={() => setCurrentPage((prev) => prev - 1)}
+                disabled={currentPage === 1}
+              >
+                Previous
+              </button>
+
+              <span className="page-info">
+                {`Page ${currentPage} of ${totalPages}`}
+              </span>
+
+              <button
+                className="pagination-button"
+                onClick={() => setCurrentPage((prev) => prev + 1)}
+                disabled={currentPage === totalPages}
+              >
+                Next
+              </button>
+            </div>
+          </>
+        )}
       </div>
-      {sortedResults.length === 0 ? (
-        <p className="text-gray-600">No results to show.</p>
-      ) : (
-        <>
-          <div className="flex flex-wrap gap-4 justify-center">
-            {currentItems.map((game, index) => (
-              <GameCard key={game.id || index} game={game} />
-            ))}
-          </div>
-          <div className="flex justify-center mt-4 gap-2">
-            <button
-              className="px-3 py-1 bg-gray-300 rounded disabled:opacity-50"
-              onClick={() => setCurrentPage((prev) => prev - 1)}
-              disabled={currentPage === 1}
-            >
-              Previous
-            </button>
-            <span className="px-4 py-1">{`Page ${currentPage} of ${totalPages}`}</span>
-            <button
-              className="px-3 py-1 bg-gray-300 rounded disabled:opacity-50"
-              onClick={() => setCurrentPage((prev) => prev + 1)}
-              disabled={currentPage === totalPages}
-            >
-              Next
-            </button>
-          </div>
-        </>
+
+      {/* Game Popup goes here at the page level */}
+      {selectedGame && (
+        <GamePopup
+          game={selectedGame}
+          onClose={() => closePopup()}
+        />
       )}
     </div>
   );

@@ -1,3 +1,5 @@
+import './css/Navbar.css';
+
 export default function Navbar({ setCurrentPage }) {
   const navItems = [
     { key: "home", label: "Home" },
@@ -7,14 +9,11 @@ export default function Navbar({ setCurrentPage }) {
   ];
 
   return (
-    <nav className="bg-gray-800 p-4 text-white shadow-md">
-      <ul className="flex gap-6 justify-center">
+    <nav>
+      <ul>
         {navItems.map(({ key, label }) => (
           <li key={key}>
-            <button
-              onClick={() => setCurrentPage(key)}
-              className="hover:text-yellow-300 transition duration-200"
-            >
+            <button onClick={() => setCurrentPage(key)}>
               {label}
             </button>
           </li>

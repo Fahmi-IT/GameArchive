@@ -5,28 +5,46 @@ import FAQPage from "./pages/FAQPage";
 import ReviewPage from "./pages/ReviewPage";
 import SearchPage from "./pages/SearchPage";
 
-export default function App() {
-  const [currentPage, setCurrentPage] = useState("home");
+const App = () => {
+  const [currentPage, setCurrentPage] = useState('home');
+  const [initialSearchQuery, setInitialSearchQuery] = useState('');
 
   const renderPage = () => {
     switch (currentPage) {
-      case "home":
-        return <HomePage />;
-      case "search":
-        return <SearchPage />;
-      case "faq":
-        return <FAQPage />;
-      case "review":
-        return <ReviewPage />;
+      case 'home':
+        return (
+          <HomePage 
+            setCurrentPage={setCurrentPage}
+            setInitialSearchQuery={setInitialSearchQuery}
+          />
+        );
+      case 'search':
+        return (
+          <SearchPage 
+            initialSearchQuery={initialSearchQuery}
+            clearInitialSearchQuery={() => setInitialSearchQuery('')}
+          />
+        );
+      case 'faq':
+        return <FAQPage />; // Your FAQ component
+      case 'review':
+        return <ReviewPage />; // Your review component
       default:
-        return <HomePage />;
+        return (
+          <HomePage 
+            setCurrentPage={setCurrentPage}
+            setInitialSearchQuery={setInitialSearchQuery}
+          />
+        );
     }
   };
 
   return (
-    <>
+    <div className="App">
       <Navbar setCurrentPage={setCurrentPage} />
-      <main className="p-4">{renderPage()}</main>
-    </>
+      {renderPage()}
+    </div>
   );
-}
+};
+
+export default App;
