@@ -23,13 +23,13 @@ const HomePage = ({ setCurrentPage, setInitialSearchQuery }) => {
     en: {
       welcome: "Welcome to",
       tagline: "Discover game stats, reviews, and more.",
-      placeholder: "Search for games, reviews, or stats...",
+      placeholder: "Search for games",
       search: "Search"
     },
     fr: {
       welcome: "Bienvenue à",
       tagline: "Découvrez les statistiques de jeux, les avis, et plus encore.",
-      placeholder: "Recherchez des jeux, des avis ou des statistiques...",
+      placeholder: "Recherchez des jeux",
       search: "Rechercher"
     }
   };
@@ -39,7 +39,7 @@ const HomePage = ({ setCurrentPage, setInitialSearchQuery }) => {
   return (
     <div className="homepage">
       <h1>
-        {t.welcome} <span className="highlight">Game Stats Hub</span>
+        {t.welcome} <span className="highlight">GameStats Hub</span>
       </h1>
       <p>{t.tagline}</p>
 
