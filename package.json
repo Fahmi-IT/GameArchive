@@ -1,9 +1,6 @@
 {
-  "homepage": "https://fahmi-it.github.io/GameArchive/",
   "name": "game-stats-dashboard",
   "scripts": {
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
     "dev": "concurrently \"npm start --prefix client\" \"node server/index.js\""
   },
   "dependencies": {
