@@ -1,10 +1,86 @@
 import React, { useState, useEffect } from 'react';
 import './css/ComparisonCharts.css';
+import { useLanguage } from '../contexts/LanguageContext'; // Import useLanguage
 
 const ComparisonCharts = ({ chartData, compareList }) => {
   const [steamSpyData, setSteamSpyData] = useState({});
   const [loading, setLoading] = useState(true);
   const [reviewsViewMode, setReviewsViewMode] = useState('total'); // 'total' or 'percentage'
+  const { language } = useLanguage(); // Use the language context
+
+  // Define text strings for localization
+  const text = {
+    en: {
+      loadingSteamData: "Loading enhanced Steam data...",
+      gameStatisticsComparison: "📊 Game Statistics Comparison",
+      vsText: "VS",
+      reviewsPerformanceMetrics: "📈 Reviews & Performance Metrics",
+      overallPerformanceComparison: "🎯 Overall Performance Comparison",
+      detailedGameInformation: "🎮 Detailed Game Information",
+      steamReviews: "Steam Reviews",
+      avgPlaytimeHrs: "Avg Playtime (hrs)",
+      metascore: "Metascore",
+      steamPrice: "Steam Price ($)",
+      totalNumbers: "Total Numbers",
+      percentage: "Percentage",
+      positive: "✓ Positive",
+      negative: "✗ Negative",
+      metric: "Metric",
+      better: "Better",
+      tie: "Tie",
+      steamId: "Steam ID",
+      igdbRating: "IGDB Rating",
+      metascoreShort: "Metascore", // Shorter for detailed card
+      steamPriceShort: "Steam Price", // Shorter for detailed card
+      developer: "Developer",
+      publisher: "Publisher",
+      steamPositive: "Steam Positive",
+      steamNegative: "Steam Negative",
+      owners: "Owners",
+      avgPlaytime: "Avg Playtime", // Shorter for detailed card
+      genres: "Genres",
+      notSpecified: "Not specified",
+      steamData: "Steam Data",
+      noSteamAppIdFound: "No Steam App ID found",
+      failedToFetchSteamData: "Failed to fetch Steam data"
+    },
+    fr: {
+      loadingSteamData: "Chargement des données Steam améliorées...",
+      gameStatisticsComparison: "📊 Comparaison des Statistiques de Jeux",
+      vsText: "CONTRE",
+      reviewsPerformanceMetrics: "📈 Avis & Métriques de Performance",
+      overallPerformanceComparison: "🎯 Comparaison des Performances Globales",
+      detailedGameInformation: "🎮 Informations Détaillées du Jeu",
+      steamReviews: "Avis Steam",
+      avgPlaytimeHrs: "Temps de Jeu Moyen (h)",
+      metascore: "Metascore",
+      steamPrice: "Prix Steam ($)",
+      totalNumbers: "Nombres Totaux",
+      percentage: "Pourcentage",
+      positive: "✓ Positif",
+      negative: "✗ Négatif",
+      metric: "Métrique",
+      better: "Mieux",
+      tie: "Égalité",
+      steamId: "ID Steam",
+      igdbRating: "Note IGDB",
+      metascoreShort: "Metascore",
+      steamPriceShort: "Prix Steam",
+      developer: "Développeur",
+      publisher: "Éditeur",
+      steamPositive: "Positifs Steam",
+      steamNegative: "Négatifs Steam",
+      owners: "Propriétaires",
+      avgPlaytime: "Temps de Jeu Moyen",
+      genres: "Genres",
+      notSpecified: "Non spécifié",
+      steamData: "Données Steam",
+      noSteamAppIdFound: "Aucun ID d'application Steam trouvé",
+      failedToFetchSteamData: "Échec de la récupération des données Steam"
+    }
+  };
+
+  const t = text[language]; // Get the translation object for the current language
 
   console.log(chartData);
   console.log(compareList);
@@ -55,7 +131,7 @@ const ComparisonCharts = ({ chartData, compareList }) => {
                     const currentIncludes = currentName.includes(gameName);
                     const bestIncludes = bestName.includes(gameName);
                     
-                    if (currentIncludes && !bestIncludes) return current;
+                    if (currentIncludes && !currentIncludes) return current;
                     if (!currentIncludes && bestIncludes) return best;
                     
                     // Fall back to first result
@@ -84,7 +160,7 @@ const ComparisonCharts = ({ chartData, compareList }) => {
                 steamAppId: null,
                 gameName: game.name,
                 metascore: 'N/A',
-                data: { error: 'No Steam App ID found' }
+                data: { error: t.noSteamAppIdFound } // Localized error
               };
             }
           } catch (err) {
@@ -93,7 +169,7 @@ const ComparisonCharts = ({ chartData, compareList }) => {
               steamAppId: steamAppId || null,
               gameName: game.name,
               metascore: 'N/A',
-              data: { error: 'Failed to fetch Steam data' }
+              data: { error: t.failedToFetchSteamData } // Localized error
             };
           }
         });
@@ -113,7 +189,7 @@ const ComparisonCharts = ({ chartData, compareList }) => {
     };
 
     fetchAllSteamSpyData();
-  }, [compareList]);
+  }, [compareList]); // Ensure 't' is NOT in this array.
 
   if (!chartData || !compareList || compareList.length !== 2) {
     return null;
@@ -147,7 +223,7 @@ const ComparisonCharts = ({ chartData, compareList }) => {
         return item;
       }),
       {
-        metric: 'Steam Reviews',
+        metric: t.steamReviews, // Localized
         type: 'stacked',
         [game1Name]: {
           positive: game1Steam.positive || 0,
@@ -161,7 +237,7 @@ const ComparisonCharts = ({ chartData, compareList }) => {
         }
       },
       {
-        metric: 'Avg Playtime (hrs)',
+        metric: t.avgPlaytimeHrs, // Localized
         [game1Name]: parseFloat(game1Playtime.toFixed(2)),
         [game2Name]: parseFloat(game2Playtime.toFixed(2)),
         maxValue: Math.max(game1Playtime, game2Playtime)
@@ -172,17 +248,17 @@ const ComparisonCharts = ({ chartData, compareList }) => {
     const enhancedRadarData = [
       ...chartData.radarData,
       {
-        subject: 'Metascore',
+        subject: t.metascore, // Localized
         [game1Name]: steamSpyData[0].metascore !== 'N/A' ? steamSpyData[0].metascore : 0,
         [game2Name]: steamSpyData[1].metascore !== 'N/A' ? steamSpyData[1].metascore : 0
       },
       {
-        subject: 'Steam Price ($)',
+        subject: t.steamPrice, // Localized
         [game1Name]: game1Steam.price ? (game1Steam.price / 100) : 0,
         [game2Name]: game2Steam.price ? (game2Steam.price / 100) : 0
       },
       {
-        subject: 'Avg Playtime (hrs)',
+        subject: t.avgPlaytimeHrs, // Localized
         [game1Name]: parseFloat(game1Playtime.toFixed(2)),
         [game2Name]: parseFloat(game2Playtime.toFixed(2))
       }
@@ -209,13 +285,13 @@ const ComparisonCharts = ({ chartData, compareList }) => {
               className={`toggle-btn ${reviewsViewMode === 'total' ? 'active' : ''}`}
               onClick={() => setReviewsViewMode('total')}
             >
-              Total Numbers
+              {t.totalNumbers} {/* Localized */}
             </button>
             <button 
               className={`toggle-btn ${reviewsViewMode === 'percentage' ? 'active' : ''}`}
               onClick={() => setReviewsViewMode('percentage')}
             >
-              Percentage
+              {t.percentage} {/* Localized */}
             </button>
           </div>
         )}
@@ -268,8 +344,8 @@ const ComparisonCharts = ({ chartData, compareList }) => {
                               </div>
                             </div>
                             <div className="stacked-legend">
-                              <span className="legend-item positive-legend">✓ Positive</span>
-                              <span className="legend-item negative-legend">✗ Negative</span>
+                              <span className="legend-item positive-legend">{t.positive}</span> {/* Localized */}
+                              <span className="legend-item negative-legend">{t.negative}</span> {/* Localized */}
                             </div>
                           </div>
                         </div>
@@ -300,7 +376,7 @@ const ComparisonCharts = ({ chartData, compareList }) => {
                           }}
                         >
                           <span className="bar-value">
-                            {item.metric.includes('Playtime') 
+                            {item.metric.includes(t.avgPlaytime) // Localized
                               ? `${item[game1Name]?.toFixed(2)}h`
                               : item.metric.toLowerCase().includes('rating') || item.metric.toLowerCase().includes('score')
                               ? `${item[game1Name]?.toFixed(1)}/100`
@@ -323,7 +399,7 @@ const ComparisonCharts = ({ chartData, compareList }) => {
                           }}
                         >
                           <span className="bar-value">
-                            {item.metric.includes('Playtime') 
+                            {item.metric.includes(t.avgPlaytime) // Localized
                               ? `${item[game2Name]?.toFixed(2)}h`
                               : item.metric.toLowerCase().includes('rating') || item.metric.toLowerCase().includes('score')
                               ? `${item[game2Name]?.toFixed(1)}/100`
@@ -352,16 +428,16 @@ const ComparisonCharts = ({ chartData, compareList }) => {
         <h3 className="chart-title">{title}</h3>
         <div className="comparison-table">
           <div className="comparison-header">
-            <div className="metric-header">Metric</div>
+            <div className="metric-header">{t.metric}</div> {/* Localized */}
             <div className="game-header game1-header">{game1Name}</div>
             <div className="game-header game2-header">{game2Name}</div>
-            <div className="winner-header">Better</div>
+            <div className="winner-header">{t.better}</div> {/* Localized */}
           </div>
           {data.map((item, index) => {
             const game1Value = item[game1Name] || 0;
             const game2Value = item[game2Name] || 0;
             const winner = game1Value > game2Value ? game1Name : 
-                          game2Value > game1Value ? game2Name : 'Tie';
+                          game2Value > game1Value ? game2Name : t.tie; // Localized
             
             return (
               <div key={index} className="comparison-row">
@@ -373,8 +449,8 @@ const ComparisonCharts = ({ chartData, compareList }) => {
                       style={{ width: `${Math.max(...data.map(d => Math.max(d[game1Name] || 0, d[game2Name] || 0))) > 0 ? (game1Value / Math.max(...data.map(d => Math.max(d[game1Name] || 0, d[game2Name] || 0)))) * 100 : 0}%` }}
                     />
                     <span className="value-text">
-                      {item.subject.includes('Price') ? `$${game1Value}` :
-                       item.subject.includes('Playtime') ? `${game1Value}h` :
+                      {item.subject.includes(t.steamPriceShort) ? `$${game1Value}` : // Localized
+                       item.subject.includes(t.avgPlaytime) ? `${game1Value}h` : // Localized
                        `${game1Value.toFixed ? game1Value.toFixed(1) : game1Value}`}
                     </span>
                   </div>
@@ -386,14 +462,14 @@ const ComparisonCharts = ({ chartData, compareList }) => {
                       style={{ width: `${Math.max(...data.map(d => Math.max(d[game1Name] || 0, d[game2Name] || 0))) > 0 ? (game2Value / Math.max(...data.map(d => Math.max(d[game1Name] || 0, d[game2Name] || 0)))) * 100 : 0}%` }}
                     />
                     <span className="value-text">
-                      {item.subject.includes('Price') ? `$${game2Value}` :
-                       item.subject.includes('Playtime') ? `${game2Value}h` :
+                      {item.subject.includes(t.steamPriceShort) ? `$${game2Value}` : // Localized
+                       item.subject.includes(t.avgPlaytime) ? `${game2Value}h` : // Localized
                        `${game2Value.toFixed ? game2Value.toFixed(1) : game2Value}`}
                     </span>
                   </div>
                 </div>
-                <div className={`winner-cell ${winner === 'Tie' ? 'tie' : winner === game1Name ? 'game1-wins' : 'game2-wins'}`}>
-                  {winner === 'Tie' ? '🤝' : winner === game1Name ? '🏆' : '🥈'}
+                <div className={`winner-cell ${winner === t.tie ? 'tie' : winner === game1Name ? 'game1-wins' : 'game2-wins'}`}>
+                  {winner === t.tie ? '🤝' : winner === game1Name ? '🏆' : '🥈'}
                 </div>
               </div>
             );
@@ -407,15 +483,15 @@ const ComparisonCharts = ({ chartData, compareList }) => {
     return (
       <div className="charts-container">
         <div className="game-comparison-header">
-          <h2>📊 Game Statistics Comparison</h2>
+          <h2>{t.gameStatisticsComparison}</h2> {/* Localized */}
           <div className="games-being-compared">
             <span className="game-name">{game1Name}</span>
-            <span className="vs-text">VS</span>
+            <span className="vs-text">{t.vsText}</span> {/* Localized */}
             <span className="game-name">{game2Name}</span>
           </div>
         </div>
         <div className="loading-container">
-          <p><em>Loading enhanced Steam data...</em></p>
+          <p><em>{t.loadingSteamData}</em></p> {/* Localized */}
         </div>
       </div>
     );
@@ -424,10 +500,10 @@ const ComparisonCharts = ({ chartData, compareList }) => {
   return (
     <div className="charts-container">
       <div className="game-comparison-header">
-        <h2>📊 Game Statistics Comparison</h2>
+        <h2>{t.gameStatisticsComparison}</h2> {/* Localized */}
         <div className="games-being-compared">
           <span className="game-name">{game1Name}</span>
-          <span className="vs-text">VS</span>
+          <span className="vs-text">{t.vsText}</span> {/* Localized */}
           <span className="game-name">{game2Name}</span>
         </div>
       </div>
@@ -436,7 +512,7 @@ const ComparisonCharts = ({ chartData, compareList }) => {
       <div className="chart-section">
         <CustomBarChart 
           data={enhancedChartData.reviewsRatingsData} 
-          title="📈 Reviews & Performance Metrics"
+          title={t.reviewsPerformanceMetrics} // Localized
           reviewsViewMode={reviewsViewMode}
           setReviewsViewMode={setReviewsViewMode}
         />
@@ -446,13 +522,13 @@ const ComparisonCharts = ({ chartData, compareList }) => {
       <div className="chart-section">
         <CustomRadarComparison 
           data={enhancedChartData.radarData} 
-          title="🎯 Overall Performance Comparison"
+          title={t.overallPerformanceComparison} // Localized
         />
       </div>
 
       {/* Enhanced Game Details Comparison Cards */}
       <div className="detailed-comparison">
-        <h3 className="chart-title">🎮 Detailed Game Information</h3>
+        <h3 className="chart-title">{t.detailedGameInformation}</h3> {/* Localized */}
         <div className="compare-cards-grid">
           {compareList.map(({ game, steamAppId }, index) => {
             const steamData = steamSpyData[index];
@@ -465,52 +541,52 @@ const ComparisonCharts = ({ chartData, compareList }) => {
                 </h4>
                 <div className="card-stats">
                   <div className="stat-item">
-                    <span className="stat-label">Steam ID:</span>
+                    <span className="stat-label">{t.steamId}:</span> {/* Localized */}
                     <span className="stat-value">{steamData?.steamAppId || 'N/A'}</span>
                   </div>
                   <div className="stat-item">
-                    <span className="stat-label">IGDB Rating:</span>
+                    <span className="stat-label">{t.igdbRating}:</span> {/* Localized */}
                     <span className="stat-value">
                       {game.aggregated_rating ? `${game.aggregated_rating.toFixed(1)}/100` : 'N/A'}
                     </span>
                   </div>
                   <div className="stat-item">
-                    <span className="stat-label">Metascore:</span>
+                    <span className="stat-label">{t.metascoreShort}:</span> {/* Localized */}
                     <span className="stat-value">{steamData?.metascore || 'N/A'}</span>
                   </div>
                   <div className="stat-item">
-                    <span className="stat-label">Steam Price:</span>
+                    <span className="stat-label">{t.steamPriceShort}:</span> {/* Localized */}
                     <span className="stat-value">
                       {steamInfo.price ? `$${(steamInfo.price / 100).toFixed(2)}` : 'N/A'}
                     </span>
                   </div>
                   <div className="stat-item">
-                    <span className="stat-label">Developer:</span>
+                    <span className="stat-label">{t.developer}:</span> {/* Localized */}
                     <span className="stat-value">{steamInfo.developer || 'N/A'}</span>
                   </div>
                   <div className="stat-item">
-                    <span className="stat-label">Publisher:</span>
+                    <span className="stat-label">{t.publisher}:</span> {/* Localized */}
                     <span className="stat-value">{steamInfo.publisher || 'N/A'}</span>
                   </div>
                   <div className="stat-item">
-                    <span className="stat-label">Steam Positive:</span>
+                    <span className="stat-label">{t.steamPositive}:</span> {/* Localized */}
                     <span className="stat-value">
                       {steamInfo.positive ? steamInfo.positive.toLocaleString() : 'N/A'}
                     </span>
                   </div>
                   <div className="stat-item">
-                    <span className="stat-label">Steam Negative:</span>
+                    <span className="stat-label">{t.steamNegative}:</span> {/* Localized */}
                     <span className="stat-value">
                       {steamInfo.negative ? steamInfo.negative.toLocaleString() : 'N/A'}
                     </span>
                   </div>
                   <div className="stat-item">
-                    <span className="stat-label">Owners:</span>
+                    <span className="stat-label">{t.owners}:</span> {/* Localized */}
                     <span className="stat-value">{steamInfo.owners || 'N/A'}</span>
                   </div>
                   {steamInfo.average_forever && (
                     <div className="stat-item">
-                      <span className="stat-label">Avg Playtime:</span>
+                      <span className="stat-label">{t.avgPlaytime}:</span> {/* Localized */}
                       <span className="stat-value">
                         {(steamInfo.average_forever / 60).toFixed(1)} hrs
                       </span>
@@ -518,18 +594,18 @@ const ComparisonCharts = ({ chartData, compareList }) => {
                   )}
                   {game.genres && (
                     <div className="stat-item genres">
-                      <span className="stat-label">Genres:</span>
+                      <span className="stat-label">{t.genres}:</span> {/* Localized */}
                       <span className="stat-value">
                         {Array.isArray(game.genres) 
                           ? game.genres.map(g => g.name || g).join(', ')
-                          : 'Not specified'
+                          : t.notSpecified // Localized
                         }
                       </span>
                     </div>
                   )}
                   {steamInfo.error && (
                     <div className="stat-item error">
-                      <span className="stat-label">Steam Data:</span>
+                      <span className="stat-label">{t.steamData}:</span> {/* Localized */}
                       <span className="stat-value error-text">{steamInfo.error}</span>
                     </div>
                   )}

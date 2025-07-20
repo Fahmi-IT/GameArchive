@@ -1,7 +1,8 @@
 import { useState, useMemo, useEffect } from 'react';
 import GameSearch from '../components/GameSearch';
 import GameCard from '../components/GameCard';
-import GamePopup from '../components/GamePopup'; // ← make sure this exists
+import GamePopup from '../components/GamePopup';
+import { useLanguage } from '../contexts/LanguageContext';
 import "./css/SearchPage.css";
 
 const ITEMS_PER_PAGE = 5;
@@ -23,11 +24,44 @@ function longestCommonSubsequence(a, b) {
 }
 
 const SearchPage = ({ initialSearchQuery, clearInitialSearchQuery }) => {
+  const { language } = useLanguage();
+
   const [results, setResults] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [sortType, setSortType] = useState('rating');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedGame, setSelectedGame] = useState(null);
+
+  const text = {
+    en: {
+      title: "Search Games",
+      sortBy: "Sort by:",
+      sortOptions: {
+        rating: "Aggregated Rating",
+        release: "Release Date",
+        similarity: "Title Similarity"
+      },
+      noResults: "No results to show.",
+      previous: "Previous",
+      next: "Next",
+      page: "Page"
+    },
+    fr: {
+      title: "Rechercher des jeux",
+      sortBy: "Trier par :",
+      sortOptions: {
+        rating: "Note moyenne",
+        release: "Date de sortie",
+        similarity: "Similarité du titre"
+      },
+      noResults: "Aucun résultat à afficher.",
+      previous: "Précédent",
+      next: "Suivant",
+      page: "Page"
+    }
+  };
+
+  const t = text[language];
 
   const handleResults = (games, query) => {
     setResults(games);
@@ -36,11 +70,11 @@ const SearchPage = ({ initialSearchQuery, clearInitialSearchQuery }) => {
   };
 
   const handleCardClick = (game) => {
-    setSelectedGame(game); // ← Show popup
+    setSelectedGame(game);
   };
 
   const closePopup = () => {
-    setSelectedGame(null); // ← Close popup
+    setSelectedGame(null);
   };
 
   useEffect(() => {
@@ -84,7 +118,7 @@ const SearchPage = ({ initialSearchQuery, clearInitialSearchQuery }) => {
       <div className="search-results-container">
         <h2 className="search-title">
           <span className="controller-icon">🎮</span>
-          Search Games
+          {t.title}
         </h2>
 
         <GameSearch 
@@ -93,20 +127,20 @@ const SearchPage = ({ initialSearchQuery, clearInitialSearchQuery }) => {
         />
 
         <div className="sort-container">
-          <label htmlFor="sort">Sort by:</label>
+          <label htmlFor="sort">{t.sortBy}</label>
           <select
             id="sort"
             value={sortType}
             onChange={(e) => setSortType(e.target.value)}
           >
-            <option value="rating">Aggregated Rating</option>
-            <option value="release">Release Date</option>
-            <option value="similarity">Title Similarity</option>
+            <option value="rating">{t.sortOptions.rating}</option>
+            <option value="release">{t.sortOptions.release}</option>
+            <option value="similarity">{t.sortOptions.similarity}</option>
           </select>
         </div>
 
         {sortedResults.length === 0 ? (
-          <p className="no-results">No results to show.</p>
+          <p className="no-results">{t.noResults}</p>
         ) : (
           <>
             <div className="games-grid">
@@ -123,11 +157,11 @@ const SearchPage = ({ initialSearchQuery, clearInitialSearchQuery }) => {
                 onClick={() => setCurrentPage((prev) => prev - 1)}
                 disabled={currentPage === 1}
               >
-                Previous
+                {t.previous}
               </button>
 
               <span className="page-info">
-                {`Page ${currentPage} of ${totalPages}`}
+                {`${t.page} ${currentPage} ${language === 'en' ? 'of' : 'sur'} ${totalPages}`}
               </span>
 
               <button
@@ -135,18 +169,17 @@ const SearchPage = ({ initialSearchQuery, clearInitialSearchQuery }) => {
                 onClick={() => setCurrentPage((prev) => prev + 1)}
                 disabled={currentPage === totalPages}
               >
-                Next
+                {t.next}
               </button>
             </div>
           </>
         )}
       </div>
 
-      {/* Game Popup goes here at the page level */}
       {selectedGame && (
         <GamePopup
           game={selectedGame}
-          onClose={() => closePopup()}
+          onClose={closePopup}
         />
       )}
     </div>

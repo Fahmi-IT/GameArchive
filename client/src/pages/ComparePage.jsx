@@ -1,19 +1,44 @@
 import React, { useContext, useMemo } from 'react';
 import { CompareContext } from '../contexts/CompareContext';
+import { useLanguage } from '../contexts/LanguageContext';
 import ComparisonCharts from '../components/ComparisonCharts';
 import './css/ComparePage.css';
 
 const ComparePage = () => {
-  console.log('ComparePage rendering...');
+  const { language } = useLanguage();
+  const { compareList = [] } = useContext(CompareContext);
 
-  const context = useContext(CompareContext);
+  const text = {
+    en: {
+      title: "Compare",
+      subtitle: "Games",
+      emptyMsg: "No games added for comparison yet.",
+      emptyHint: "Start exploring and add games to see detailed comparisons here!",
+      oneGameMsg: "Add one more game to unlock comparison charts!",
+      steamAppId: "Steam App ID",
+      rating: "Rating",
+      genres: "Genres",
+      notAvailable: "Not Available",
+      notSpecified: "Not specified"
+    },
+    fr: {
+      title: "Comparer",
+      subtitle: "des Jeux",
+      emptyMsg: "Aucun jeu ajouté pour la comparaison.",
+      emptyHint: "Commencez à explorer et ajoutez des jeux pour voir des comparaisons détaillées ici !",
+      oneGameMsg: "Ajoutez un autre jeu pour afficher les graphiques de comparaison !",
+      steamAppId: "ID Steam",
+      rating: "Note",
+      genres: "Genres",
+      notAvailable: "Non disponible",
+      notSpecified: "Non spécifié"
+    }
+  };
 
-  const compareList = context?.compareList || []; // Use optional chaining and default empty array
+  const t = text[language];
 
-  // Parse and normalize game data for charts
   const chartData = useMemo(() => {
-    console.log('Computing chart data...');
-    if (compareList.length !== 2) return null; // Return null if not enough data for charts
+    if (compareList.length !== 2) return null;
 
     const [game1, game2] = compareList;
 
@@ -31,19 +56,19 @@ const ComparePage = () => {
       const match = ownersStr.toString().match(/[\d,]+/);
       if (match) {
         const num = parseFloat(match[0].replace(/,/g, ''));
-        return num / 1000000; // Convert to millions for better chart display
+        return num / 1000000;
       }
       return 0;
     };
 
     const parseRating = (rating) => {
       const parsed = parseNumber(rating);
-      return Math.min(parsed, 100); // Cap at 100
+      return Math.min(parsed, 100);
     };
 
     const parsePlaytime = (playtime) => {
       const parsed = parseNumber(playtime);
-      return parsed > 1000 ? parsed / 60 : parsed; // If > 1000, assume minutes, convert to hours
+      return parsed > 1000 ? parsed / 60 : parsed;
     };
 
     const reviewsRatingsData = [
@@ -64,7 +89,6 @@ const ComparePage = () => {
       }
     ];
 
-    // Chart 2 Data: Price, Average Playtime, User Ratings (Radar Chart)
     const radarData = [
       {
         subject: 'Price ($)',
@@ -87,49 +111,43 @@ const ComparePage = () => {
     ];
 
     return { reviewsRatingsData, radarData };
-  }, [compareList]); // Dependency: compareList
-
-  console.log('Rendering JSX...');
+  }, [compareList]);
 
   return (
     <div className="compare-page">
       <h1 className="page-title">
-        <span className="game-icon">式</span>
-        Compare <span className="highlight">Games</span>
+        <span className="game-icon">📊</span>
+        {t.title} <span className="highlight">{t.subtitle}</span>
       </h1>
 
       {compareList.length === 0 ? (
         <div className="empty-state">
-          <p>識 No games added for comparison yet.</p>
-          <p className="empty-state-subtitle">
-            Start exploring and add games to see detailed comparisons here!
-          </p>
+          <p>{t.emptyMsg}</p>
+          <p className="empty-state-subtitle">{t.emptyHint}</p>
         </div>
       ) : compareList.length === 1 ? (
         <div className="single-game-state">
-          <p>投 Add one more game to unlock comparison charts!</p>
+          <p>{t.oneGameMsg}</p>
           <div className="compare-container">
             {compareList.map(({ game, steamAppId }) => (
               <div key={steamAppId} className="compare-card">
-                <h2 className="card-title">
-                  軸 {game.name}
-                </h2>
+                <h2 className="card-title">{game.name}</h2>
                 <p className="card-info">
-                  <span className="card-info-label">Steam App ID:</span> {steamAppId}
+                  <span className="card-info-label">{t.steamAppId}:</span> {steamAppId}
                 </p>
                 <p className="card-info">
-                  <span className="card-info-label">Rating:</span> {
+                  <span className="card-info-label">{t.rating}:</span> {
                     game.aggregated_rating
                       ? `${game.aggregated_rating.toFixed(1)}/100`
-                      : 'Not Available'
+                      : t.notAvailable
                   }
                 </p>
                 {game.genres && (
                   <p className="card-info">
-                    <span className="card-info-label">Genres:</span> {
+                    <span className="card-info-label">{t.genres}:</span> {
                       Array.isArray(game.genres)
                         ? game.genres.map(g => g.name || g).join(', ')
-                        : 'Not specified'
+                        : t.notSpecified
                     }
                   </p>
                 )}

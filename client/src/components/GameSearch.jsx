@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import "./css/GameSearch.css";
+import { useLanguage } from '../contexts/LanguageContext'; // Import useLanguage
 
 const GameSearch = ({ onResults, initialQuery }) => {
   const [title, setTitle] = useState(initialQuery || '');
@@ -10,6 +11,28 @@ const GameSearch = ({ onResults, initialQuery }) => {
   const [isLoading, setIsLoading] = useState(false);
   const inputRef = useRef(null);
   const suggestionRefs = useRef([]);
+
+  const { language } = useLanguage(); // Use the language context
+
+  // Define text strings for localization
+  const text = {
+    en: {
+      searchPlaceholder: "Search for a game",
+      searching: "Searching...",
+      searchButton: "Search",
+      noSteamAppIdFound: "No Steam App ID found", // Although not directly used here, good to keep consistent
+      failedToFetchSteamData: "Failed to fetch Steam data" // Although not directly used here, good to keep consistent
+    },
+    fr: {
+      searchPlaceholder: "Rechercher un jeu",
+      searching: "Recherche...",
+      searchButton: "Rechercher",
+      noSteamAppIdFound: "Aucun ID d'application Steam trouvé",
+      failedToFetchSteamData: "Échec de la récupération des données Steam"
+    }
+  };
+
+  const t = text[language]; // Get the translation object for the current language
 
   useEffect(() => {
     if (initialQuery && initialQuery.trim()) {
@@ -135,7 +158,7 @@ const GameSearch = ({ onResults, initialQuery }) => {
           <input
             ref={inputRef}
             type="text"
-            placeholder="Search for a game"
+            placeholder={t.searchPlaceholder}
             value={title}
             onChange={handleInputChange}
             onKeyDown={handleKeyDown}
@@ -149,7 +172,7 @@ const GameSearch = ({ onResults, initialQuery }) => {
             <div className="suggestions-dropdown">
               {isLoading ? (
                 <div className="suggestion-item loading">
-                  Searching...
+                  {t.searching} {/* Localized */}
                 </div>
               ) : (
                 suggestions.map((suggestion, index) => (
@@ -178,7 +201,7 @@ const GameSearch = ({ onResults, initialQuery }) => {
           className="game-search-button"
           disabled={!title.trim()}
         >
-          Search
+          {t.searchButton} {/* Localized */}
         </button>
       </form>
     </div>

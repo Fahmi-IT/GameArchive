@@ -4,13 +4,16 @@ import './index.css';
 import App from './App.jsx';
 import reportWebVitals from './reportWebVitals';
 import { CompareProvider } from './contexts/CompareContext';
+import { LanguageProvider } from './contexts/LanguageContext.jsx';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
+    <LanguageProvider>
     <CompareProvider>
       <App />
     </CompareProvider>
+    </LanguageProvider>
   </React.StrictMode>
 );
 

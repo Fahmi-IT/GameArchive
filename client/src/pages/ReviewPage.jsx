@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import './css/ReviewPage.css';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const ReviewPage = () => {
+  const { language } = useLanguage();
+
   const [currentStage, setCurrentStage] = useState(1);
   const [formData, setFormData] = useState({
     name: '',
     isAnonymous: false,
-    rating: 5, // Default to middle value
+    rating: 5,
     comments: '',
     email: '',
     skipEmail: false
@@ -14,48 +17,119 @@ const ReviewPage = () => {
 
   const totalStages = 3;
 
-  // Rating tooltips mapping
   const ratingTooltips = {
-    1: "Terrible",
-    2: "Very Poor", 
-    3: "Poor",
-    4: "Below Average",
-    5: "Average",
-    6: "Above Average",
-    7: "Good",
-    8: "Very Good",
-    9: "Excellent",
-    10: "Outstanding"
+    en: {
+      1: "Terrible", 2: "Very Poor", 3: "Poor", 4: "Below Average", 5: "Average",
+      6: "Above Average", 7: "Good", 8: "Very Good", 9: "Excellent", 10: "Outstanding"
+    },
+    fr: {
+      1: "Terrible", 2: "Très mauvais", 3: "Mauvais", 4: "Insuffisant", 5: "Moyen",
+      6: "Plutôt bon", 7: "Bon", 8: "Très bon", 9: "Excellent", 10: "Exceptionnel"
+    }
   };
 
+  const text = {
+    en: {
+      title: "Give Us Feedback!",
+      progress: ["Name", "Review", "Contact"],
+      stage1: {
+        heading: "Tell us your name",
+        sub: "We'd like to know who's sharing their feedback with us.",
+        label: "Your Name",
+        placeholder: "Enter your name",
+        anonymous: "I prefer to remain anonymous",
+        continue: "Continue"
+      },
+      stage2: {
+        heading: "Rate your experience",
+        sub: "How would you rate our site overall?",
+        label: "Rating (1-10)",
+        commentsLabel: "Your Comments",
+        commentsPlaceholder: "Tell us about your experience...",
+        back: "Back",
+        continue: "Continue"
+      },
+      stage3: {
+        heading: "Get a response",
+        sub: "Would you like us to follow up on your review?",
+        email: "Email Address",
+        placeholder: "Enter your email",
+        skip: "I don't want to be contacted",
+        summaryTitle: "Review Summary",
+        summary: {
+          name: "Name",
+          rating: "Rating",
+          comments: "Comments",
+          email: "Email"
+        },
+        submit: "Submit Review"
+      },
+      alertSuccess: "Thank you for your review! We appreciate your feedback.",
+      alertError: "There was an error submitting your review. Please try again.",
+      anonymous: "Anonymous",
+      notProvided: "Not provided"
+    },
+    fr: {
+      title: "Donnez votre avis !",
+      progress: ["Nom", "Avis", "Contact"],
+      stage1: {
+        heading: "Dites-nous votre nom",
+        sub: "Nous aimerions savoir qui partage son avis avec nous.",
+        label: "Votre nom",
+        placeholder: "Entrez votre nom",
+        anonymous: "Je préfère rester anonyme",
+        continue: "Continuer"
+      },
+      stage2: {
+        heading: "Évaluez votre expérience",
+        sub: "Quelle note donneriez-vous à notre site ?",
+        label: "Note (1-10)",
+        commentsLabel: "Vos commentaires",
+        commentsPlaceholder: "Parlez-nous de votre expérience...",
+        back: "Retour",
+        continue: "Continuer"
+      },
+      stage3: {
+        heading: "Recevoir une réponse",
+        sub: "Souhaitez-vous que nous vous répondions ?",
+        email: "Adresse e-mail",
+        placeholder: "Entrez votre e-mail",
+        skip: "Je ne souhaite pas être contacté",
+        summaryTitle: "Résumé de l'avis",
+        summary: {
+          name: "Nom",
+          rating: "Note",
+          comments: "Commentaires",
+          email: "E-mail"
+        },
+        submit: "Soumettre l'avis"
+      },
+      alertSuccess: "Merci pour votre avis ! Nous apprécions vos retours.",
+      alertError: "Une erreur est survenue. Veuillez réessayer.",
+      anonymous: "Anonyme",
+      notProvided: "Non fourni"
+    }
+  };
+
+  const t = text[language];
+  const tooltip = ratingTooltips[language];
+
   const handleInputChange = (field, value) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: value
-    }));
+    setFormData(prev => ({ ...prev, [field]: value }));
   };
 
   const handleNext = () => {
-    if (currentStage < totalStages) {
-      setCurrentStage(prev => prev + 1);
-    }
+    if (currentStage < totalStages) setCurrentStage(prev => prev + 1);
   };
 
   const handleBack = () => {
-    if (currentStage > 1) {
-      setCurrentStage(prev => prev - 1);
-    }
+    if (currentStage > 1) setCurrentStage(prev => prev - 1);
   };
 
   const handleSubmit = async () => {
     try {
-      // Here you would typically send the data to your backend
       console.log('Submitting review:', formData);
-      
-      // For now, just show an alert
-      alert('Thank you for your review! We appreciate your feedback.');
-      
-      // Reset form
+      alert(t.alertSuccess);
       setFormData({
         name: '',
         isAnonymous: false,
@@ -67,7 +141,7 @@ const ReviewPage = () => {
       setCurrentStage(1);
     } catch (error) {
       console.error('Error submitting review:', error);
-      alert('There was an error submitting your review. Please try again.');
+      alert(t.alertError);
     }
   };
 
@@ -75,226 +149,189 @@ const ReviewPage = () => {
   const canProceedStage2 = formData.rating && formData.comments.trim();
   const canSubmit = formData.skipEmail || formData.email.trim();
 
-  const renderProgressBar = () => {
-    return (
-      <div className="progress-container">
-        <div className="progress-bar">
-          <div 
-            className="progress-fill"
-            style={{ width: `${(currentStage / totalStages) * 100}%` }}
-          ></div>
-        </div>
-        <div className="progress-labels">
-          <span className={currentStage >= 1 ? 'active' : ''}>Name</span>
-          <span className={currentStage >= 2 ? 'active' : ''}>Review</span>
-          <span className={currentStage >= 3 ? 'active' : ''}>Contact</span>
-        </div>
+  const renderProgressBar = () => (
+    <div className="progress-container">
+      <div className="progress-bar">
+        <div 
+          className="progress-fill"
+          style={{ width: `${(currentStage / totalStages) * 100}%` }}
+        ></div>
       </div>
-    );
-  };
+      <div className="progress-labels">
+        {t.progress.map((label, index) => (
+          <span key={index} className={currentStage >= index + 1 ? 'active' : ''}>
+            {label}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
 
-  const renderStage1 = () => {
-    return (
-      <div className="review-stage">
-        <h2>Tell us your name</h2>
-        <p>We'd like to know who's sharing their feedback with us.</p>
-        
-        <div className="form-group">
-          <label htmlFor="name">Your Name</label>
+  const renderStage1 = () => (
+    <div className="review-stage">
+      <h2>{t.stage1.heading}</h2>
+      <p>{t.stage1.sub}</p>
+      <div className="form-group">
+        <label htmlFor="name">{t.stage1.label}</label>
+        <input
+          id="name"
+          type="text"
+          placeholder={t.stage1.placeholder}
+          value={formData.name}
+          onChange={(e) => handleInputChange('name', e.target.value)}
+          disabled={formData.isAnonymous}
+          className={formData.isAnonymous ? 'disabled' : ''}
+        />
+      </div>
+      <div className="form-group">
+        <label className="checkbox-label">
           <input
-            id="name"
-            type="text"
-            placeholder="Enter your name"
-            value={formData.name}
-            onChange={(e) => handleInputChange('name', e.target.value)}
-            disabled={formData.isAnonymous}
-            className={formData.isAnonymous ? 'disabled' : ''}
+            type="checkbox"
+            checked={formData.isAnonymous}
+            onChange={(e) => {
+              handleInputChange('isAnonymous', e.target.checked);
+              if (e.target.checked) handleInputChange('name', '');
+            }}
           />
-        </div>
-
-        <div className="form-group">
-          <label className="checkbox-label">
-            <input
-              type="checkbox"
-              checked={formData.isAnonymous}
-              onChange={(e) => {
-                handleInputChange('isAnonymous', e.target.checked);
-                if (e.target.checked) {
-                  handleInputChange('name', '');
-                }
-              }}
-            />
-            <span className="checkbox-text">I prefer to remain anonymous</span>
-          </label>
-        </div>
-
-        <div className="button-group">
-          <button 
-            className="btn btn-primary"
-            onClick={handleNext}
-            disabled={!canProceedStage1}
-          >
-            Continue
-          </button>
-        </div>
+          <span className="checkbox-text">{t.stage1.anonymous}</span>
+        </label>
       </div>
-    );
-  };
+      <div className="button-group">
+        <button 
+          className="btn btn-primary"
+          onClick={handleNext}
+          disabled={!canProceedStage1}
+        >
+          {t.stage1.continue}
+        </button>
+      </div>
+    </div>
+  );
 
-  const renderStage2 = () => {
-    return (
-      <div className="review-stage">
-        <h2>Rate your experience</h2>
-        <p>How would you rate our site overall?</p>
-        
-        <div className="form-group">
-          <label>Rating (1-10)</label>
-          <div className="rating-container">
-            <div className="rating-display">
-              <div className="rating-value">{formData.rating}</div>
-              <div className={`rating-tooltip ${formData.rating ? 'show' : ''}`}>
-                {ratingTooltips[formData.rating]}
-              </div>
+  const renderStage2 = () => (
+    <div className="review-stage">
+      <h2>{t.stage2.heading}</h2>
+      <p>{t.stage2.sub}</p>
+      <div className="form-group">
+        <label>{t.stage2.label}</label>
+        <div className="rating-container">
+          <div className="rating-display">
+            <div className="rating-value">{formData.rating}</div>
+            <div className={`rating-tooltip ${formData.rating ? 'show' : ''}`}>
+              {tooltip[formData.rating]}
             </div>
-            
-            <div className="rating-slider-container">
-              <input
-                type="range"
-                min="1"
-                max="10"
-                value={formData.rating}
-                onChange={(e) => handleInputChange('rating', parseInt(e.target.value))}
-                className="rating-slider"
-              />
-              <div className="rating-labels">
-                <span>1</span>
-                <span>2</span>
-                <span>3</span>
-                <span>4</span>
-                <span>5</span>
-                <span>6</span>
-                <span>7</span>
-                <span>8</span>
-                <span>9</span>
-                <span>10</span>
-              </div>
+          </div>
+          <div className="rating-slider-container">
+            <input
+              type="range"
+              min="1"
+              max="10"
+              value={formData.rating}
+              onChange={(e) => handleInputChange('rating', parseInt(e.target.value))}
+              className="rating-slider"
+            />
+            <div className="rating-labels">
+              {[...Array(10)].map((_, i) => <span key={i}>{i + 1}</span>)}
             </div>
           </div>
         </div>
-
-        <div className="form-group">
-          <label htmlFor="comments">Your Comments</label>
-          <textarea
-            id="comments"
-            placeholder="Tell us about your experience..."
-            value={formData.comments}
-            onChange={(e) => handleInputChange('comments', e.target.value)}
-            rows="4"
-          ></textarea>
-        </div>
-
-        <div className="button-group">
-          <button 
-            className="btn btn-secondary"
-            onClick={handleBack}
-          >
-            Back
-          </button>
-          <button 
-            className="btn btn-primary"
-            onClick={handleNext}
-            disabled={!canProceedStage2}
-          >
-            Continue
-          </button>
-        </div>
       </div>
-    );
-  };
+      <div className="form-group">
+        <label htmlFor="comments">{t.stage2.commentsLabel}</label>
+        <textarea
+          id="comments"
+          placeholder={t.stage2.commentsPlaceholder}
+          value={formData.comments}
+          onChange={(e) => handleInputChange('comments', e.target.value)}
+          rows="4"
+        ></textarea>
+      </div>
+      <div className="button-group">
+        <button className="btn btn-secondary" onClick={handleBack}>
+          {t.stage2.back}
+        </button>
+        <button 
+          className="btn btn-primary"
+          onClick={handleNext}
+          disabled={!canProceedStage2}
+        >
+          {t.stage2.continue}
+        </button>
+      </div>
+    </div>
+  );
 
-  const renderStage3 = () => {
-    return (
-      <div className="review-stage">
-        <h2>Get a response</h2>
-        <p>Would you like us to follow up on your review?</p>
-        
-        <div className="form-group">
-          <label htmlFor="email">Email Address</label>
+  const renderStage3 = () => (
+    <div className="review-stage">
+      <h2>{t.stage3.heading}</h2>
+      <p>{t.stage3.sub}</p>
+      <div className="form-group">
+        <label htmlFor="email">{t.stage3.email}</label>
+        <input
+          id="email"
+          type="email"
+          placeholder={t.stage3.placeholder}
+          value={formData.email}
+          onChange={(e) => handleInputChange('email', e.target.value)}
+          disabled={formData.skipEmail}
+          className={formData.skipEmail ? 'disabled' : ''}
+        />
+      </div>
+      <div className="form-group">
+        <label className="checkbox-label">
           <input
-            id="email"
-            type="email"
-            placeholder="Enter your email"
-            value={formData.email}
-            onChange={(e) => handleInputChange('email', e.target.value)}
-            disabled={formData.skipEmail}
-            className={formData.skipEmail ? 'disabled' : ''}
+            type="checkbox"
+            checked={formData.skipEmail}
+            onChange={(e) => {
+              handleInputChange('skipEmail', e.target.checked);
+              if (e.target.checked) handleInputChange('email', '');
+            }}
           />
+          <span className="checkbox-text">{t.stage3.skip}</span>
+        </label>
+      </div>
+      <div className="review-summary">
+        <h3>{t.stage3.summaryTitle}</h3>
+        <div className="summary-item">
+          <strong>{t.stage3.summary.name}:</strong>
+          <span>{formData.isAnonymous ? t.anonymous : formData.name || t.notProvided}</span>
         </div>
-
-        <div className="form-group">
-          <label className="checkbox-label">
-            <input
-              type="checkbox"
-              checked={formData.skipEmail}
-              onChange={(e) => {
-                handleInputChange('skipEmail', e.target.checked);
-                if (e.target.checked) {
-                  handleInputChange('email', '');
-                }
-              }}
-            />
-            <span className="checkbox-text">I don't want to be contacted</span>
-          </label>
+        <div className="summary-item">
+          <strong>{t.stage3.summary.rating}:</strong>
+          <span>{formData.rating}/10 - {tooltip[formData.rating]}</span>
         </div>
-
-        <div className="review-summary">
-          <h3>Review Summary</h3>
-          <div className="summary-item">
-            <strong>Name:</strong>
-            <span>{formData.isAnonymous ? 'Anonymous' : formData.name || 'Not provided'}</span>
-          </div>
-          <div className="summary-item">
-            <strong>Rating:</strong>
-            <span>{formData.rating}/10 - {ratingTooltips[formData.rating]}</span>
-          </div>
-          <div className="summary-item">
-            <strong>Comments:</strong>
-            <span>{formData.comments}</span>
-          </div>
-          <div className="summary-item">
-            <strong>Email:</strong>
-            <span>{formData.skipEmail ? 'Not provided' : formData.email || 'Not provided'}</span>
-          </div>
+        <div className="summary-item">
+          <strong>{t.stage3.summary.comments}:</strong>
+          <span>{formData.comments}</span>
         </div>
-
-        <div className="button-group">
-          <button 
-            className="btn btn-secondary"
-            onClick={handleBack}
-          >
-            Back
-          </button>
-          <button 
-            className="btn btn-primary"
-            onClick={handleSubmit}
-            disabled={!canSubmit}
-          >
-            Submit Review
-          </button>
+        <div className="summary-item">
+          <strong>{t.stage3.summary.email}:</strong>
+          <span>{formData.skipEmail ? t.notProvided : formData.email || t.notProvided}</span>
         </div>
       </div>
-    );
-  };
+      <div className="button-group">
+        <button className="btn btn-secondary" onClick={handleBack}>
+          {t.stage2.back}
+        </button>
+        <button 
+          className="btn btn-primary"
+          onClick={handleSubmit}
+          disabled={!canSubmit}
+        >
+          {t.stage3.submit}
+        </button>
+      </div>
+    </div>
+  );
 
   return (
     <div className="review-page">
       <h2 className="review-title">
         <span className="review-icon">📝</span>
-        Give Us Feedback!
+        {t.title}
       </h2>
       <div className="review-container">
         {renderProgressBar()}
-        
         <div className="review-content">
           {currentStage === 1 && renderStage1()}
           {currentStage === 2 && renderStage2()}

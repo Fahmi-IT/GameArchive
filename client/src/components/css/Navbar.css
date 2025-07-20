@@ -1,60 +1,62 @@
-/* Navbar Styles - Minimalist Game Browsing Website */
+/* Navbar Styles - Centered Nav with Right Language Toggle */
 
-/* Main navigation container */
-nav {
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+nav.navbar-container {
   position: sticky;
   top: 0;
   z-index: 1000;
-  padding: 1rem 2rem;
-}
-
-/* Navigation list styling */
-nav ul {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 2rem 2rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 2rem;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-/* Navigation items */
-nav li {
+  animation: slideIn 0.5s ease-out;
   position: relative;
 }
 
-/* Navigation buttons */
-nav button {
+/* Center wrapper for nav items */
+.nav-center-wrapper {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Nav list centered */
+.nav-center {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Nav buttons */
+.nav-center li {
+  position: relative;
+}
+
+.nav-center button {
   background: none;
   border: none;
   color: #e2e8f0;
-  font-size: 1rem;
+  font-size: 0.875rem;
   font-weight: 500;
   padding: 0.75rem 1.5rem;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
-  position: relative;
   letter-spacing: 0.025em;
   text-transform: uppercase;
-  font-size: 0.875rem;
 }
 
-/* Hover effects */
-nav button:hover {
+.nav-center button:hover {
   color: #00d4ff;
   background: rgba(0, 212, 255, 0.1);
   transform: translateY(-2px);
 }
 
-/* Active state indicator */
-nav button::after {
+.nav-center button::after {
   content: '';
   position: absolute;
   bottom: -4px;
@@ -67,47 +69,99 @@ nav button::after {
   border-radius: 1px;
 }
 
-nav button:hover::after {
+.nav-center button:hover::after {
   width: 80%;
 }
 
-/* Focus states for accessibility */
-nav button:focus {
+.nav-center button:focus {
   outline: 2px solid #00d4ff;
   outline-offset: 2px;
   color: #00d4ff;
 }
 
-/* Mobile responsiveness */
+/* Right language toggle */
+.nav-right {
+  position: absolute;
+  right: 2rem;
+  display: flex;
+  align-items: center;
+}
+
+.language-toggle {
+  background: none;
+  border: none;
+  color: #e2e8f0;
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
+}
+
+.language-toggle:hover {
+  color: #00d4ff;
+  background: rgba(0, 212, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+.language-toggle:focus {
+  outline: 2px solid #00d4ff;
+  outline-offset: 2px;
+}
+
+/* Mobile adjustments */
 @media (max-width: 768px) {
-  nav {
+  nav.navbar-container {
+    flex-direction: column;
     padding: 1rem;
   }
-  
-  nav ul {
-    gap: 1rem;
-    flex-wrap: wrap;
+
+  .nav-center-wrapper {
+    position: static;
+    transform: none;
+    margin-bottom: 0.5rem;
   }
-  
-  nav button {
+
+  .nav-center {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .nav-right {
+    position: static;
+    align-self: flex-end;
+  }
+
+  .nav-center button,
+  .language-toggle {
     font-size: 0.8rem;
     padding: 0.5rem 1rem;
   }
 }
 
 @media (max-width: 480px) {
-  nav ul {
+  .nav-center {
     flex-direction: column;
+    align-items: center;
     gap: 0.5rem;
   }
-  
-  nav button {
+
+  .language-toggle {
     width: 100%;
     text-align: center;
   }
+
+  .nav-right {
+    width: 100%;
+    justify-content: flex-end;
+  }
 }
 
-/* Smooth animations */
+/* Animation */
 @keyframes slideIn {
   from {
     opacity: 0;
@@ -117,8 +171,4 @@ nav button:focus {
     opacity: 1;
     transform: translateY(0);
   }
-}
-
-nav {
-  animation: slideIn 0.5s ease-out;
 }
