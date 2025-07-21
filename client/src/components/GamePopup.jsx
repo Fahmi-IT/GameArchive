@@ -73,7 +73,7 @@ const GamePopup = ({ game, onClose }) => {
       return;
     }
 
-    addToCompare({ steamAppId, game });
+    addToCompare({ steamAppId, game, metascore: metascore});
     alert(t.addedToCompare);
   };
 
