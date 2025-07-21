@@ -4,7 +4,7 @@
 .charts-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0rem 1.5rem;
+  padding: 2rem 1.5rem;
   position: relative;
   z-index: 1; /* Ensure content is above pseudo-elements */
 }
@@ -60,18 +60,28 @@
   text-shadow: 0 0 15px rgba(139, 92, 246, 0.5);
 }
 
-/* Chart sections */
-.chart-section {
+/* New: Container for side-by-side charts */
+.main-charts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); /* Two columns, responsive */
+  gap: 2.5rem; /* Spacing between charts */
   margin-top: 2.5rem;
   position: relative;
   z-index: 1;
+}
+
+/* Chart sections */
+.chart-section {
+  position: relative;
+  z-index: 1;
   animation: fadeInUp 1s ease-out; /* Apply fade-in animation */
+  display: flex; /* Make chart section a flex container */
+  flex-direction: column; /* Stack contents vertically */
 }
 
 /* Base style for chart wrappers, similar to compare-card */
 .custom-bar-chart,
-.custom-radar-comparison,
-.detailed-compare-card {
+.custom-radar-comparison { /* Removed .detailed-compare-card */
   background: rgba(15, 23, 42, 0.8); /* Darker, semi-transparent background */
   border: 2px solid rgba(255, 255, 255, 0.1);
   border-radius: 20px;
@@ -80,13 +90,12 @@
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
-  margin-bottom: 2rem; /* Spacing between chart sections */
+  height: 100%; /* Ensure both charts in grid have equal height */
 }
 
 /* Add accent border to chart wrappers */
 .custom-bar-chart::before,
-.custom-radar-comparison::before,
-.detailed-compare-card::before {
+.custom-radar-comparison::before { /* Removed .detailed-compare-card */
   content: '';
   position: absolute;
   top: 0;
@@ -99,8 +108,7 @@
 
 /* Hover effect for chart wrappers */
 .custom-bar-chart:hover,
-.custom-radar-comparison:hover,
-.detailed-compare-card:hover {
+.custom-radar-comparison:hover { /* Removed .detailed-compare-card */
   border-color: #00d4ff; /* Vibrant blue on hover */
   box-shadow: 0 0 30px rgba(0, 212, 255, 0.3); /* Soft glow */
   transform: translateY(-5px); /* Slight lift effect */
@@ -176,11 +184,11 @@
 }
 
 .bar-game1 {
-  background: linear-gradient(90deg, #00d4ff, #8b5cf6); /* Vibrant gradient for game 1 */
+  background: linear-gradient(90deg, #00d4ff, #8b5cf6); /* Vibrant gradient for game 1 (blue to purple) */
 }
 
 .bar-game2 {
-  background: linear-gradient(90deg, #8b5cf6, #00d4ff); /* Reversed gradient for game 2 */
+  background: linear-gradient(90deg, #8b5cf6, #00d4ff); /* Reversed gradient for game 2 (purple to blue) */
 }
 
 .bar-value {
@@ -204,7 +212,7 @@
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Stacked bar chart specific styles */
+/* Stacked bar chart specific styles (Steam Reviews) */
 .chart-controls {
   display: flex;
   justify-content: center;
@@ -238,12 +246,16 @@
 
 .stacked-group {
   margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem; /* Space between the two game review bars */
 }
 
 .stacked-item .bar-label {
   margin-bottom: 0.75rem;
   font-weight: 600;
   color: #e2e8f0;
+  text-align: center; /* Center the label for the reviews */
 }
 
 .stacked-bar-wrapper {
@@ -270,8 +282,12 @@
   font-weight: bold;
   color: white;
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+  transition: width 0.4s ease-out; /* Smooth transition for width change */
+  white-space: nowrap; /* Prevent text wrapping */
+  padding: 0 0.5rem; /* Add padding for content */
 }
 
+/* Specific colors for positive/negative bars */
 .positive-bar {
   background: linear-gradient(135deg, #28a745, #20c997); /* Green gradient */
 }
@@ -282,7 +298,9 @@
 
 .stacked-legend {
   display: flex;
-  justify-content: space-around; /* Space out legend items */
+  flex-wrap: wrap; /* Allow legend items to wrap */
+  justify-content: center; /* Center legend items */
+  gap: 1rem; /* Space out legend items */
   margin-top: 0.75rem;
   font-size: 0.85rem;
 }
@@ -302,186 +320,19 @@
   color: #e74c3c; /* Brighter red */
 }
 
-/* Radar comparison (table) specific styles */
-.comparison-table {
-  background: rgba(15, 23, 42, 0.6);
-  border-radius: 15px;
-  overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.comparison-header {
-  display: grid;
-  grid-template-columns: 1.5fr 2fr 2fr 0.8fr; /* Adjust column widths */
-  background: linear-gradient(90deg, #1e293b, #334155); /* Darker gradient header */
-  color: #f8fafc;
-  padding: 1rem 1.5rem;
-  font-weight: 700;
-  font-size: 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.comparison-row {
-  display: grid;
-  grid-template-columns: 1.5fr 2fr 2fr 0.8fr;
-  padding: 1rem 1.5rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05); /* Lighter border */
-  align-items: center;
-  transition: background-color 0.2s ease;
-}
-
-.comparison-row:last-child {
-  border-bottom: none;
-}
-
-.comparison-row:nth-child(even) {
-  background: rgba(15, 23, 42, 0.5); /* Slightly different shade for even rows */
-}
-
-.comparison-row:hover {
-  background: rgba(255, 255, 255, 0.03); /* Subtle hover effect */
-}
-
-.metric-cell {
-  font-weight: 600;
-  color: #cbd5e1;
-  font-size: 0.95rem;
-}
-
-.value-cell {
-  padding: 0 0.5rem;
-}
-
-.value-bar {
-  position: relative;
-  height: 30px;
-  background: rgba(255, 255, 255, 0.08);
-  border-radius: 15px;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
-}
-
-.value-fill {
-  height: 100%;
-  border-radius: 15px;
-  transition: width 0.4s ease-out;
-}
-
-.game1-fill {
-  background: linear-gradient(90deg, #00d4ff, #8b5cf6);
-}
-
-.game2-fill {
-  background: linear-gradient(90deg, #8b5cf6, #00d4ff);
-}
-
-.value-text {
-  position: absolute;
-  right: 10px;
-  font-size: 0.85rem;
-  font-weight: bold;
-  color: #f8fafc;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
-}
-
-.winner-cell {
-  text-align: center;
-  font-size: 1.5rem;
-}
-
-.game1-wins {
-  color: #00d4ff; /* Blue for winner */
-}
-
-.game2-wins {
-  color: #8b5cf6; /* Purple for winner */
-}
-
-.tie {
-  color: #facc15; /* Yellow for tie */
-}
-
-/* Detailed Comparison Cards */
-.detailed-comparison {
-  margin-top: 3rem;
-  position: relative;
-  z-index: 1;
-  animation: fadeInUp 1s ease-out 0.3s both; /* Delayed fade-in */
-}
-
-.compare-cards-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); /* Adjust min-width */
-  gap: 2rem;
-  margin-top: 2rem;
-}
-
-.detailed-compare-card {
-  /* Inherits base styles from .custom-bar-chart etc. */
-  padding: 2.5rem; /* More padding for detailed card */
-  display: flex;
-  flex-direction: column;
-  height: 100%; /* Ensure cards are same height */
-}
-
-.detailed-card-title {
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: #f8fafc;
-  margin-bottom: 1.5rem;
-  text-align: center;
-  background: linear-gradient(45deg, #00d4ff, #8b5cf6);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.card-stats {
-  display: flex;
-  flex-direction: column;
-  gap: 0.8rem; /* Closer spacing for stats */
-}
-
-.stat-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.6rem 0;
-  border-bottom: 1px dashed rgba(255, 255, 255, 0.08); /* Dashed separator */
-}
-
-.stat-item:last-child {
-  border-bottom: none;
-}
-
-.stat-label {
-  font-weight: 600;
-  color: #cbd5e1;
-  font-size: 0.95rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.stat-value {
-  color: #e2e8f0;
-  font-size: 0.95rem;
-  text-align: right;
-  flex-shrink: 0; /* Prevent text from shrinking */
-}
-
-.stat-value.error-text {
-  color: #ff6b6b; /* Red color for errors */
-  font-weight: 500;
-}
-
-.stat-item.genres .stat-value {
-  text-align: left; /* Align genre list to the left */
-  flex-grow: 1;
-  padding-left: 10px;
-}
+/* --- Removed Detailed Comparison Card Styles --- */
+/*
+.detailed-comparison { ... }
+.compare-cards-grid { ... }
+.detailed-compare-card { ... }
+.detailed-card-title { ... }
+.card-stats { ... }
+.stat-item { ... }
+.stat-label { ... }
+.stat-value { ... }
+.stat-value.error-text { ... }
+.stat-item.genres .stat-value { ... }
+*/
 
 /* Loading state */
 .loading-container {
@@ -528,27 +379,13 @@
     font-size: 1.5rem;
   }
 
-  .detailed-compare-card {
-    padding: 2rem;
-  }
-
-  .detailed-card-title {
-    font-size: 1.6rem;
-  }
-
-  .compare-cards-grid {
-    grid-template-columns: 1fr; /* Stack cards on smaller screens */
+  .main-charts-grid {
+    grid-template-columns: 1fr; /* Stack charts on smaller screens */
+    gap: 2rem;
   }
 }
 
 @media (max-width: 768px) {
-  .comparison-header,
-  .comparison-row {
-    grid-template-columns: 1fr; /* Stack table headers and rows */
-    gap: 0.5rem;
-    padding: 0.8rem 1rem;
-  }
-  
   .bar-item {
     flex-direction: column;
     align-items: stretch;
@@ -574,27 +411,16 @@
     margin-bottom: 0.5rem;
   }
 
-  .value-text {
+  .bar-value {
     position: static; /* Adjust position for smaller screens */
     margin-left: 0.5rem;
+    text-align: right;
+    width: 100%; /* Take full width within bar */
   }
-
-  .detailed-compare-card {
-    padding: 1.5rem;
-  }
-
-  .stat-item {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.3rem;
-  }
-  .stat-value {
-    text-align: left;
-    width: 100%;
-  }
-
-  .stat-item.genres .stat-value {
-    padding-left: 0;
+  
+  .stacked-bar {
+    font-size: 0.75rem; /* Smaller font for stacked bar values */
+    padding: 0 0.3rem;
   }
 }
 
@@ -617,21 +443,17 @@
   }
 
   .bar-group,
-  .comparison-table,
-  .detailed-compare-card {
+  .custom-bar-chart,
+  .custom-radar-comparison {
     padding: 1rem;
   }
 
-  .metric-label, .stat-label {
+  .metric-label {
     font-size: 0.9rem;
   }
 
-  .bar-value, .value-text {
+  .bar-value {
     font-size: 0.8rem;
-  }
-
-  .winner-cell {
-    font-size: 1.2rem;
   }
 }
 
@@ -639,18 +461,13 @@
 @media (prefers-color-scheme: dark) {
   /* Most elements already designed for dark mode, but ensure consistency */
   .custom-bar-chart,
-  .custom-radar-comparison,
-  .detailed-compare-card {
+  .custom-radar-comparison {
     background: rgba(15, 23, 42, 0.8);
     border-color: rgba(255, 255, 255, 0.1);
   }
 
-  .bar-group, .comparison-table {
+  .bar-group {
     background: rgba(15, 23, 42, 0.6);
     border-color: rgba(255, 255, 255, 0.05);
-  }
-
-  .comparison-row:nth-child(even) {
-    background: rgba(15, 23, 42, 0.5);
   }
 }
