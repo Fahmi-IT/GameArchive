@@ -383,9 +383,7 @@ const ComparisonCharts = ({ chartData, compareList }) => {
                               : item[game1Name]?.toLocaleString?.() || item[game1Name]?.toFixed?.(1) || 0}
                           </span>
                         </div>
-                        {(item.metric.toLowerCase().includes('rating') || item.metric.toLowerCase().includes('score')) && (
-                          <div className="max-indicator">100</div>
-                        )}
+                        {(item.metric.toLowerCase().includes('rating') || item.metric.toLowerCase().includes('score'))}
                       </div>
                     </div>
                     <div className="bar-item">
@@ -406,9 +404,7 @@ const ComparisonCharts = ({ chartData, compareList }) => {
                               : item[game2Name]?.toLocaleString?.() || item[game2Name]?.toFixed?.(1) || 0}
                           </span>
                         </div>
-                        {(item.metric.toLowerCase().includes('rating') || item.metric.toLowerCase().includes('score')) && (
-                          <div className="max-indicator">100</div>
-                        )}
+                        {(item.metric.toLowerCase().includes('rating') || item.metric.toLowerCase().includes('score'))}
                       </div>
                     </div>
                   </div>
