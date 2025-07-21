@@ -1,327 +1,656 @@
-.custom-bar-chart {
-          background: #f8f9fa;
-          border-radius: 12px;
-          padding: 20px;
-          margin: 20px 0;
-        }
-        
-        .chart-title {
-          margin-bottom: 20px;
-          color: #333;
-          font-size: 1.2rem;
-        }
-        
-        .bar-group {
-          margin-bottom: 25px;
-          padding: 15px;
-          background: white;
-          border-radius: 8px;
-          box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        
-        .metric-label {
-          font-weight: bold;
-          margin-bottom: 10px;
-          color: #555;
-        }
-        
-        .bars-container {
-          display: flex;
-          flex-direction: column;
-          gap: 10px;
-        }
-        
-        .bar-item {
-          display: flex;
-          align-items: center;
-          gap: 15px;
-        }
-        
-        .bar-label {
-          min-width: 120px;
-          font-size: 0.9rem;
-          color: #666;
-        }
-        
-        .bar-wrapper {
-          flex: 1;
-          height: 30px;
-          background: #e9ecef;
-          border-radius: 15px;
-          position: relative;
-          overflow: hidden;
-        }
-        
-        .bar {
-          height: 100%;
-          border-radius: 15px;
-          display: flex;
-          align-items: center;
-          justify-content: flex-end;
-          padding: 0 10px;
-          transition: width 0.3s ease;
-        }
-        
-        .bar-game1 {
-          background: linear-gradient(90deg, #8884d8, #a694e6);
-        }
-        
-        .bar-game2 {
-          background: linear-gradient(90deg, #82ca9d, #95d5b2);
-        }
-        
-        .bar-value {
-          color: white;
-          font-weight: bold;
-          font-size: 0.85rem;
-          text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
-        }
-        
-        .custom-radar-comparison {
-          background: #f8f9fa;
-          border-radius: 12px;
-          padding: 20px;
-          margin: 20px 0;
-        }
-        
-        .comparison-table {
-          background: white;
-          border-radius: 8px;
-          overflow: hidden;
-          box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        
-        .comparison-header {
-          display: grid;
-          grid-template-columns: 1fr 2fr 2fr 80px;
-          background: #495057;
-          color: white;
-          padding: 15px;
-          font-weight: bold;
-        }
-        
-        .comparison-row {
-          display: grid;
-          grid-template-columns: 1fr 2fr 2fr 80px;
-          padding: 15px;
-          border-bottom: 1px solid #dee2e6;
-          align-items: center;
-        }
-        
-        .comparison-row:last-child {
-          border-bottom: none;
-        }
-        
-        .comparison-row:nth-child(even) {
-          background: #f8f9fa;
-        }
-        
-        .metric-cell {
-          font-weight: 600;
-          color: #495057;
-        }
-        
-        .value-cell {
-          padding: 0 10px;
-        }
-        
-        .value-bar {
-          position: relative;
-          height: 25px;
-          background: #e9ecef;
-          border-radius: 12px;
-          overflow: hidden;
-          display: flex;
-          align-items: center;
-        }
-        
-        .value-fill {
-          height: 100%;
-          border-radius: 12px;
-          transition: width 0.3s ease;
-        }
-        
-        .game1-fill {
-          background: linear-gradient(90deg, #8884d8, #a694e6);
-        }
-        
-        .game2-fill {
-          background: linear-gradient(90deg, #82ca9d, #95d5b2);
-        }
-        
-        .value-text {
-          position: absolute;
-          right: 8px;
-          font-size: 0.85rem;
-          font-weight: bold;
-          color: #495057;
-          text-shadow: 1px 1px 2px rgba(255,255,255,0.8);
-        }
-        
-        .winner-cell {
-          text-align: center;
-          font-size: 1.2rem;
-        }
-        
-        .game1-wins {
-          color: #8884d8;
-        }
-        
-        .game2-wins {
-          color: #82ca9d;
-        }
-        
-        .tie {
-          color: #ffc107;
-        }
-        
-        .charts-container {
-          max-width: 1200px;
-          margin: 0 auto;
-          padding: 20px;
-        }
-        
-        .game-comparison-header {
-          text-align: center;
-          margin-bottom: 30px;
-        }
-        
-        .games-being-compared {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 20px;
-          margin-top: 10px;
-        }
-        
-        .game-name {
-          font-weight: bold;
-          color: #495057;
-          padding: 8px 16px;
-          background: #e9ecef;
-          border-radius: 20px;
-        }
-        
-        .vs-text {
-          font-weight: bold;
-          color: #dc3545;
-          font-size: 1.2rem;
-        }
-        
-        @media (max-width: 768px) {
-          .comparison-header,
-          .comparison-row {
-            grid-template-columns: 1fr;
-            gap: 10px;
-          }
-          
-          .bar-item {
-            flex-direction: column;
-            align-items: stretch;
-          }
-          
-          .games-being-compared {
-            flex-direction: column;
-            gap: 10px;
-          }
-        }
-        .chart-controls {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 20px;
+/* ComparisonCharts Styles - Game Stats Hub */
+
+/* Main charts container */
+.charts-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+  position: relative;
+  z-index: 1; /* Ensure content is above pseudo-elements */
+}
+
+/* Game comparison header */
+.game-comparison-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  color: #f8fafc; /* Light text for dark background */
+  position: relative;
+  z-index: 1;
+}
+
+.game-comparison-header h2 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #f8fafc;
+  text-shadow: 0 4px 20px rgba(0, 212, 255, 0.3);
+  letter-spacing: -0.025em;
+  margin-bottom: 1rem;
+}
+
+.games-being-compared {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.game-name {
+  font-weight: 700;
+  font-size: 1.5rem;
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  color: #f8fafc;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.game-name:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.vs-text {
+  font-weight: 900;
+  color: #8b5cf6; /* Vibrant purple */
+  font-size: 1.8rem;
+  text-shadow: 0 0 15px rgba(139, 92, 246, 0.5);
+}
+
+/* Chart sections */
+.chart-section {
+  margin-top: 2.5rem;
+  position: relative;
+  z-index: 1;
+  animation: fadeInUp 1s ease-out; /* Apply fade-in animation */
+}
+
+/* Base style for chart wrappers, similar to compare-card */
+.custom-bar-chart,
+.custom-radar-comparison,
+.detailed-compare-card {
+  background: rgba(15, 23, 42, 0.8); /* Darker, semi-transparent background */
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 2rem;
+  backdrop-filter: blur(10px); /* Frosted glass effect */
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 2rem; /* Spacing between chart sections */
+}
+
+/* Add accent border to chart wrappers */
+.custom-bar-chart::before,
+.custom-radar-comparison::before,
+.detailed-compare-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(45deg, #00d4ff, #8b5cf6); /* Vibrant gradient */
+  border-radius: 20px 20px 0 0;
+}
+
+/* Hover effect for chart wrappers */
+.custom-bar-chart:hover,
+.custom-radar-comparison:hover,
+.detailed-compare-card:hover {
+  border-color: #00d4ff; /* Vibrant blue on hover */
+  box-shadow: 0 0 30px rgba(0, 212, 255, 0.3); /* Soft glow */
+  transform: translateY(-5px); /* Slight lift effect */
+}
+
+
+.chart-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #f8fafc; /* Light text */
+  margin-bottom: 2rem;
+  text-align: center;
+  background: linear-gradient(45deg, #00d4ff, #8b5cf6); /* Gradient text */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Bar chart specific styles */
+.bar-group {
+  margin-bottom: 1.5rem;
+  padding: 1.5rem;
+  background: rgba(15, 23, 42, 0.6); /* Slightly lighter dark background */
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.metric-label {
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #cbd5e1; /* Light gray text */
+  font-size: 1.1rem;
+}
+
+.bars-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.bar-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.bar-label {
+  min-width: 150px; /* Adjust for readability */
+  font-size: 1rem;
+  color: #e2e8f0; /* Off-white text */
+  font-weight: 500;
+}
+
+.bar-wrapper {
+  flex: 1;
+  height: 35px; /* Slightly taller bars */
+  background: rgba(255, 255, 255, 0.1); /* Semi-transparent background for bar track */
+  border-radius: 17px; /* Fully rounded */
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.bar {
+  height: 100%;
+  border-radius: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 1rem;
+  transition: width 0.4s ease-out; /* Smoother animation */
+}
+
+.bar-game1 {
+  background: linear-gradient(90deg, #00d4ff, #8b5cf6); /* Vibrant gradient for game 1 */
+}
+
+.bar-game2 {
+  background: linear-gradient(90deg, #8b5cf6, #00d4ff); /* Reversed gradient for game 2 */
+}
+
+.bar-value {
+  color: #f8fafc; /* White text on bars */
+  font-weight: bold;
+  font-size: 0.9rem;
+  text-shadow: 0 0 8px rgba(0, 0, 0, 0.5); /* Clearer text shadow */
+}
+
+.max-indicator {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.85rem;
+  color: #cbd5e1;
+  background: rgba(15, 23, 42, 0.7);
+  padding: 4px 8px;
+  border-radius: 5px;
+  z-index: 2;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Stacked bar chart specific styles */
+.chart-controls {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.toggle-btn {
+  padding: 0.75rem 1.5rem;
+  border: 2px solid #00d4ff;
+  background: transparent;
+  color: #00d4ff;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 10px rgba(0, 212, 255, 0.2);
+}
+
+.toggle-btn.active {
+  background: linear-gradient(45deg, #00d4ff, #8b5cf6);
+  color: white;
+  border-color: transparent;
+  box-shadow: 0 4px 15px rgba(0, 212, 255, 0.4);
+}
+
+.toggle-btn:not(.active):hover {
+  background: rgba(0, 212, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+.stacked-group {
+  margin-bottom: 2rem;
+}
+
+.stacked-item .bar-label {
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+  color: #e2e8f0;
+}
+
+.stacked-bar-wrapper {
+  position: relative;
+}
+
+.stacked-bar-container {
+  display: flex;
+  align-items: center;
+  height: 45px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: inset 0 1px 5px rgba(0, 0, 0, 0.3);
+}
+
+.stacked-bar {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: white;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.positive-bar {
+  background: linear-gradient(135deg, #28a745, #20c997); /* Green gradient */
+}
+
+.negative-bar {
+  background: linear-gradient(135deg, #dc3545, #e74c3c); /* Red gradient */
+}
+
+.stacked-legend {
+  display: flex;
+  justify-content: space-around; /* Space out legend items */
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #cbd5e1;
+}
+
+.positive-legend {
+  color: #20c997; /* Brighter green */
+}
+
+.negative-legend {
+  color: #e74c3c; /* Brighter red */
+}
+
+/* Radar comparison (table) specific styles */
+.comparison-table {
+  background: rgba(15, 23, 42, 0.6);
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.comparison-header {
+  display: grid;
+  grid-template-columns: 1.5fr 2fr 2fr 0.8fr; /* Adjust column widths */
+  background: linear-gradient(90deg, #1e293b, #334155); /* Darker gradient header */
+  color: #f8fafc;
+  padding: 1rem 1.5rem;
+  font-weight: 700;
+  font-size: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.comparison-row {
+  display: grid;
+  grid-template-columns: 1.5fr 2fr 2fr 0.8fr;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05); /* Lighter border */
+  align-items: center;
+  transition: background-color 0.2s ease;
+}
+
+.comparison-row:last-child {
+  border-bottom: none;
+}
+
+.comparison-row:nth-child(even) {
+  background: rgba(15, 23, 42, 0.5); /* Slightly different shade for even rows */
+}
+
+.comparison-row:hover {
+  background: rgba(255, 255, 255, 0.03); /* Subtle hover effect */
+}
+
+.metric-cell {
+  font-weight: 600;
+  color: #cbd5e1;
+  font-size: 0.95rem;
+}
+
+.value-cell {
+  padding: 0 0.5rem;
+}
+
+.value-bar {
+  position: relative;
+  height: 30px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 15px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.value-fill {
+  height: 100%;
+  border-radius: 15px;
+  transition: width 0.4s ease-out;
+}
+
+.game1-fill {
+  background: linear-gradient(90deg, #00d4ff, #8b5cf6);
+}
+
+.game2-fill {
+  background: linear-gradient(90deg, #8b5cf6, #00d4ff);
+}
+
+.value-text {
+  position: absolute;
+  right: 10px;
+  font-size: 0.85rem;
+  font-weight: bold;
+  color: #f8fafc;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
+}
+
+.winner-cell {
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+.game1-wins {
+  color: #00d4ff; /* Blue for winner */
+}
+
+.game2-wins {
+  color: #8b5cf6; /* Purple for winner */
+}
+
+.tie {
+  color: #facc15; /* Yellow for tie */
+}
+
+/* Detailed Comparison Cards */
+.detailed-comparison {
+  margin-top: 3rem;
+  position: relative;
+  z-index: 1;
+  animation: fadeInUp 1s ease-out 0.3s both; /* Delayed fade-in */
+}
+
+.compare-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); /* Adjust min-width */
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.detailed-compare-card {
+  /* Inherits base styles from .custom-bar-chart etc. */
+  padding: 2.5rem; /* More padding for detailed card */
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Ensure cards are same height */
+}
+
+.detailed-card-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #f8fafc;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  background: linear-gradient(45deg, #00d4ff, #8b5cf6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.card-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem; /* Closer spacing for stats */
+}
+
+.stat-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.6rem 0;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.08); /* Dashed separator */
+}
+
+.stat-item:last-child {
+  border-bottom: none;
+}
+
+.stat-label {
+  font-weight: 600;
+  color: #cbd5e1;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.stat-value {
+  color: #e2e8f0;
+  font-size: 0.95rem;
+  text-align: right;
+  flex-shrink: 0; /* Prevent text from shrinking */
+}
+
+.stat-value.error-text {
+  color: #ff6b6b; /* Red color for errors */
+  font-weight: 500;
+}
+
+.stat-item.genres .stat-value {
+  text-align: left; /* Align genre list to the left */
+  flex-grow: 1;
+  padding-left: 10px;
+}
+
+/* Loading state */
+.loading-container {
+  text-align: center;
+  color: #cbd5e1;
+  font-size: 1.25rem;
+  margin-top: 3rem;
+  position: relative;
+  z-index: 1;
+}
+
+/* Animations (copied from ComparePage.css for consistency) */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive design */
+@media (max-width: 992px) {
+  .charts-container {
+    padding: 1.5rem 1rem;
+  }
+
+  .game-comparison-header h2 {
+    font-size: 2rem;
+  }
+
+  .game-name {
+    font-size: 1.3rem;
+    padding: 0.4rem 0.8rem;
+  }
+
+  .vs-text {
+    font-size: 1.5rem;
+  }
+
+  .chart-title {
+    font-size: 1.5rem;
+  }
+
+  .detailed-compare-card {
+    padding: 2rem;
+  }
+
+  .detailed-card-title {
+    font-size: 1.6rem;
+  }
+
+  .compare-cards-grid {
+    grid-template-columns: 1fr; /* Stack cards on smaller screens */
+  }
+}
+
+@media (max-width: 768px) {
+  .comparison-header,
+  .comparison-row {
+    grid-template-columns: 1fr; /* Stack table headers and rows */
+    gap: 0.5rem;
+    padding: 0.8rem 1rem;
   }
   
+  .bar-item {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+  
+  .games-being-compared {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .game-name {
+    font-size: 1.1rem;
+  }
+
+  .vs-text {
+    font-size: 1.3rem;
+  }
+
+  .bar-label {
+    min-width: unset;
+    text-align: left;
+    margin-bottom: 0.5rem;
+  }
+
+  .value-text {
+    position: static; /* Adjust position for smaller screens */
+    margin-left: 0.5rem;
+  }
+
+  .detailed-compare-card {
+    padding: 1.5rem;
+  }
+
+  .stat-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.3rem;
+  }
+  .stat-value {
+    text-align: left;
+    width: 100%;
+  }
+
+  .stat-item.genres .stat-value {
+    padding-left: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .charts-container {
+    padding: 1rem 0.5rem;
+  }
+
+  .game-comparison-header h2 {
+    font-size: 1.8rem;
+  }
+
+  .chart-title {
+    font-size: 1.3rem;
+  }
+
   .toggle-btn {
-    padding: 8px 16px;
-    border: 2px solid #ccc;
-    background: white;
-    border-radius: 5px;
-    cursor: pointer;
-    z-index: 2;
-    transition: all 0.3s ease;
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
   }
-  
-  .toggle-btn.active {
-    background: #007bff;
-    color: white;
-    border-color: #007bff;
+
+  .bar-group,
+  .comparison-table,
+  .detailed-compare-card {
+    padding: 1rem;
   }
-  
-  .stacked-group {
-    margin-bottom: 30px;
+
+  .metric-label, .stat-label {
+    font-size: 0.9rem;
   }
-  
-  .stacked-item .bar-label {
-    margin-bottom: 5px;
-    font-weight: bold;
+
+  .bar-value, .value-text {
+    font-size: 0.8rem;
   }
-  
-  .stacked-bar-wrapper {
-    position: relative;
+
+  .winner-cell {
+    font-size: 1.2rem;
   }
-  
-  .stacked-bar-container {
-    display: flex;
-    align-items: center;
-    height: 40px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    overflow: hidden;
-    background: #f8f9fa;
+}
+
+/* Dark mode enhancement */
+@media (prefers-color-scheme: dark) {
+  /* Most elements already designed for dark mode, but ensure consistency */
+  .custom-bar-chart,
+  .custom-radar-comparison,
+  .detailed-compare-card {
+    background: rgba(15, 23, 42, 0.8);
+    border-color: rgba(255, 255, 255, 0.1);
   }
-  
-  .stacked-bar {
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px;
-    font-weight: bold;
-    color: white;
+
+  .bar-group, .comparison-table {
+    background: rgba(15, 23, 42, 0.6);
+    border-color: rgba(255, 255, 255, 0.05);
   }
-  
-  .positive-bar {
-    background: linear-gradient(135deg, #28a745, #20c997);
+
+  .comparison-row:nth-child(even) {
+    background: rgba(15, 23, 42, 0.5);
   }
-  
-  .negative-bar {
-    background: linear-gradient(135deg, #dc3545, #e74c3c);
-  }
-  
-  .stacked-legend {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 5px;
-    font-size: 11px;
-  }
-  
-  .legend-item {
-    display: flex;
-    align-items: center;
-    gap: 3px;
-  }
-  
-  .positive-legend {
-    color: #28a745;
-  }
-  
-  .negative-legend {
-    color: #dc3545;
-  }
-  
-  .max-indicator {
-    position: absolute;
-    right: 5px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 11px;
-    color: #666;
-    background: rgba(255,255,255,0.8);
-    padding: 2px 4px;
-    border-radius: 2px;
-  }
-  
-  .bar-wrapper {
-    position: relative;
-  }
+}
