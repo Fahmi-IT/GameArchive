@@ -176,11 +176,11 @@
 }
 
 .bar-game1 {
-  background: linear-gradient(90deg, #00d4ff, #8b5cf6); /* Vibrant gradient for game 1 */
+  background: #8b5cf6;
 }
 
 .bar-game2 {
-  background: linear-gradient(90deg, #8b5cf6, #00d4ff); /* Reversed gradient for game 2 */
+  background: #e74c3c;
 }
 
 .bar-value {
@@ -253,7 +253,8 @@
 .stacked-bar-container {
   display: flex;
   align-items: center;
-  height: 45px;
+  height: 35px;
+  width: 300px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
   overflow: hidden;
