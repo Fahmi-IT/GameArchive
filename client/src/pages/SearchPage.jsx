@@ -28,7 +28,7 @@ const SearchPage = ({ initialSearchQuery, clearInitialSearchQuery }) => {
 
   const [results, setResults] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [sortType, setSortType] = useState('rating');
+  const [sortType, setSortType] = useState('rating-desc');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedGame, setSelectedGame] = useState(null);
 
@@ -37,9 +37,11 @@ const SearchPage = ({ initialSearchQuery, clearInitialSearchQuery }) => {
       title: "Search Games",
       sortBy: "Sort by:",
       sortOptions: {
-        rating: "Aggregated Rating",
-        release: "Release Date",
-        similarity: "Title Similarity"
+        "rating-asc": "Aggregated Rating Ascending",
+        "rating-desc": "Aggregated Rating Descending",
+        "release-newest": "Release Date Newest",
+        "release-oldest": "Release Date Oldest",
+        "similarity": "Title Similarity"
       },
       noResults: "No results to show.",
       previous: "Previous",
@@ -50,9 +52,11 @@ const SearchPage = ({ initialSearchQuery, clearInitialSearchQuery }) => {
       title: "Rechercher des jeux",
       sortBy: "Trier par :",
       sortOptions: {
-        rating: "Note moyenne",
-        release: "Date de sortie",
-        similarity: "Similarité du titre"
+        "rating-asc": "Note moyenne croissante",
+        "rating-desc": "Note moyenne décroissante",
+        "release-newest": "Date de sortie récente",
+        "release-oldest": "Date de sortie ancienne",
+        "similarity": "Similarité du titre"
       },
       noResults: "Aucun résultat à afficher.",
       previous: "Précédent",
@@ -85,10 +89,14 @@ const SearchPage = ({ initialSearchQuery, clearInitialSearchQuery }) => {
 
   const sortedResults = useMemo(() => {
     const sorted = [...results];
-    if (sortType === 'rating') {
+    if (sortType === 'rating-desc') {
       sorted.sort((a, b) => (b.aggregated_rating || 0) - (a.aggregated_rating || 0));
-    } else if (sortType === 'release') {
+    } else if (sortType === 'rating-asc') {
+      sorted.sort((a, b) => (a.aggregated_rating || 0) - (b.aggregated_rating || 0));
+    } else if (sortType === 'release-newest') {
       sorted.sort((a, b) => (b.first_release_date || 0) - (a.first_release_date || 0));
+    } else if (sortType === 'release-oldest') {
+      sorted.sort((a, b) => (a.first_release_date || 0) - (b.first_release_date || 0));
     } else if (sortType === 'similarity') {
       if (!searchQuery || !searchQuery.trim()) return sorted;
       return sorted
@@ -133,8 +141,10 @@ const SearchPage = ({ initialSearchQuery, clearInitialSearchQuery }) => {
             value={sortType}
             onChange={(e) => setSortType(e.target.value)}
           >
-            <option value="rating">{t.sortOptions.rating}</option>
-            <option value="release">{t.sortOptions.release}</option>
+            <option value="rating-asc">{t.sortOptions["rating-asc"]}</option>
+            <option value="rating-desc">{t.sortOptions["rating-desc"]}</option>
+            <option value="release-newest">{t.sortOptions["release-newest"]}</option>
+            <option value="release-oldest">{t.sortOptions["release-oldest"]}</option>
             <option value="similarity">{t.sortOptions.similarity}</option>
           </select>
         </div>
