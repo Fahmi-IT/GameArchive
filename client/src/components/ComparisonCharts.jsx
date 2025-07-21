@@ -31,8 +31,8 @@ const ComparisonCharts = ({ chartData, compareList }) => {
       reviewsRatingsMetrics: "📈 Reviews & Ratings Metrics",
       costPerformanceMetrics: "💰 Cost & Performance Metrics",
       detailedGameInformation: "🎮 Detailed Game Information",
-      userScore: "User Score",
-      metascore: "Metascore",
+      userScore: "User Score (0 - 100)",
+      metascore: "Metascore (0 - 100)",
       steamReviewsRatio: "Steam Reviews (Positive/Negative)",
       avgPlaytimeHrs: "Average Playtime (hours)",
       steamPrice: "Steam Price ($)",
@@ -65,8 +65,8 @@ const ComparisonCharts = ({ chartData, compareList }) => {
       reviewsRatingsMetrics: "📈 Avis & Métriques de Notes",
       costPerformanceMetrics: "💰 Coût & Métriques de Performance",
       detailedGameInformation: "🎮 Informations Détaillées du Jeu",
-      userScore: "Score Utilisateur",
-      metascore: "Metascore",
+      userScore: "Score Utilisateur (0 - 100)",
+      metascore: "Metascore (0 - 100)",
       steamReviewsRatio: "Avis Steam (Positif/Négatif)",
       avgPlaytimeHrs: "Temps de Jeu Moyen (heures)",
       steamPrice: "Prix Steam ($)",
@@ -410,7 +410,7 @@ const ComparisonCharts = ({ chartData, compareList }) => {
                               : item.metric.includes(t.costPerHour)
                               ? `$${item[game1Name]?.toFixed(2)}`
                               : item.metric.toLowerCase().includes('score')
-                              ? `${item[game1Name]?.toFixed(1)}/100`
+                              ? `${item[game1Name]?.toFixed(1)}`
                               : item[game1Name]?.toLocaleString?.() || item[game1Name]?.toFixed?.(1) || 0}
                           </span>
                         </div>
