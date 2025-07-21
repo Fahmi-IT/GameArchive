@@ -119,7 +119,7 @@ const GamePopup = ({ game, onClose }) => {
         }
 
         if (steamAppId) {
-          const res = await fetch(`/api/steamspy/${steamAppId}`);
+          const res = await fetch(`/api/steamspy?appid=${steamAppId}`);
           console.log(res);
           const data = await res.json();
           setSteamSpyData(data);
