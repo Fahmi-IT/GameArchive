@@ -41,6 +41,7 @@ const ComparePage = () => {
     if (compareList.length !== 2) return null;
 
     const [game1, game2] = compareList;
+    console.log('Comparing games:', game1, game2);
 
     const parseNumber = (value, defaultValue = 0) => {
       if (typeof value === 'number') return value;
@@ -75,12 +76,12 @@ const ComparePage = () => {
       {
         metric: 'User Rating',
         [game1.game.name || 'Game 1']: parseRating(game1.game.aggregated_rating),
-        [game2.game.name || 'Game 2']: parseRating(game2.game.aggregated_rating || game2.game.rating)
+        [game2.game.name || 'Game 2']: parseRating(game2.game.aggregated_rating)
       },
       {
         metric: 'Metascore',
-        [game1.game.name || 'Game 1']: parseNumber(game1.game.total_rating) || parseRating(game1.game.metascore) || 75,
-        [game2.game.name || 'Game 2']: parseNumber(game2.game.total_rating) || parseRating(game2.game.metascore) || 75
+        [game1.game.name || 'Game 1']: parseNumber(game1.game.total_rating) || parseRating(game1.game.metascore) || 0,
+        [game2.game.name || 'Game 2']: parseNumber(game2.game.total_rating) || parseRating(game2.game.metascore) || 0
       },
       {
         metric: 'Owners (Millions)',

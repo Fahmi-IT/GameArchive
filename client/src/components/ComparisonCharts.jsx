@@ -242,8 +242,8 @@ const ComparisonCharts = ({ chartData, compareList }) => {
     const reviewsRatingsData = [
       {
         metric: t.userScore,
-        [game1Name]: game1.user_rating || 0,
-        [game2Name]: game2.user_rating || 0,
+        [game1Name]: game1.aggregated_rating || 0,
+        [game2Name]: game2.aggregated_rating || 0,
         maxValue: 100
       },
       {
@@ -435,7 +435,7 @@ const ComparisonCharts = ({ chartData, compareList }) => {
                               : item.metric.includes(t.costPerHour)
                               ? `$${item[game2Name]?.toFixed(2)}`
                               : item.metric.toLowerCase().includes('score')
-                              ? `${item[game2Name]?.toFixed(1)}/100`
+                              ? `${item[game2Name]?.toFixed(1)}`
                               : item[game2Name]?.toLocaleString?.() || item[game2Name]?.toFixed?.(1) || 0}
                           </span>
                         </div>
