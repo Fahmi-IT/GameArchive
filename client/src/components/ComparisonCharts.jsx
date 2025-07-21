@@ -471,15 +471,6 @@ const ComparisonCharts = ({ chartData, compareList }) => {
 
   return (
     <div className="charts-container">
-      <div className="game-comparison-header">
-        <h2>{t.gameStatisticsComparison}</h2>
-        <div className="games-being-compared">
-          <span className="game-name" style={{ borderColor: gameColors.game1.primary }}>{game1Name}</span>
-          <span className="vs-text">{t.vsText}</span>
-          <span className="game-name" style={{ borderColor: gameColors.game2.primary }}>{game2Name}</span>
-        </div>
-      </div>
-
       {/* First Chart: Reviews & Ratings */}
       <div className="chart-section">
         <CustomBarChart 
