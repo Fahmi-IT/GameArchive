@@ -34,12 +34,6 @@ const GameSearch = ({ onResults, initialQuery }) => {
 
   const t = text[language]; // Get the translation object for the current language
 
-  useEffect(() => {
-    if (initialQuery && initialQuery.trim()) {
-      handleSearch(initialQuery);
-    }
-  }, [initialQuery]);
-
   // Debounced search for suggestions
   useEffect(() => {
     const timeoutId = setTimeout(() => {
@@ -88,6 +82,12 @@ const GameSearch = ({ onResults, initialQuery }) => {
     }
   };
 
+  useEffect(() => {
+    if (initialQuery && initialQuery.trim()) {
+      handleSearch(initialQuery);
+    }
+  }, [initialQuery, handleSearch]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (selectedIndex >= 0 && suggestions[selectedIndex]) {
@@ -128,6 +128,9 @@ const GameSearch = ({ onResults, initialQuery }) => {
           e.preventDefault();
           selectSuggestion(suggestions[selectedIndex]);
         }
+        break;
+      default:
+        // Allow other keys to function normally
         break;
     }
   };

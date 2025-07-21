@@ -134,7 +134,7 @@ const GamePopup = ({ game, onClose }) => {
     };
 
     fetchSteamSpyData();
-  }, [game.name]);
+  }, [game.name, game.appid, game.steam_appid, t.errorNoAppId]);
 
   const getRatingClass = (rating) => {
     if (!rating || rating === 'N/A') return 'rating-na';

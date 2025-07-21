@@ -189,7 +189,7 @@ const ComparisonCharts = ({ chartData, compareList }) => {
     };
 
     fetchAllSteamSpyData();
-  }, [compareList]); // Ensure 't' is NOT in this array.
+  }, [compareList, t.failedToFetchSteamData, t.noSteamAppIdFound]); // Ensure 't' is NOT in this array.
 
   if (!chartData || !compareList || compareList.length !== 2) {
     return null;
