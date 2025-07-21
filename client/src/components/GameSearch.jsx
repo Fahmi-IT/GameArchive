@@ -75,6 +75,9 @@ const GameSearch = ({ onResults, initialQuery }) => {
     
     try {
       const igdb = await axios.get(`/api/igdb?title=${encodeURIComponent(queryToUse)}`);
+      console.log('IGDB Response:', igdb.data);
+      console.log('Is Array?', Array.isArray(igdb.data));
+      console.log('Type:', typeof igdb.data);
       onResults(igdb.data, queryToUse);
     } catch (err) {
       console.error(err);
