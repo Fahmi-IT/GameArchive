@@ -14,6 +14,7 @@ const ReviewPage = () => {
     email: '',
     skipEmail: false
   });
+  const [emailError, setEmailError] = useState('');
 
   const totalStages = 3;
 
@@ -67,7 +68,8 @@ const ReviewPage = () => {
       alertSuccess: "Thank you for your review! We appreciate your feedback.",
       alertError: "There was an error submitting your review. Please try again.",
       anonymous: "Anonymous",
-      notProvided: "Not provided"
+      notProvided: "Not provided",
+      emailInvalid: "Please enter a valid email address"
     },
     fr: {
       title: "Donnez votre avis !",
@@ -107,15 +109,27 @@ const ReviewPage = () => {
       alertSuccess: "Merci pour votre avis ! Nous apprécions vos retours.",
       alertError: "Une erreur est survenue. Veuillez réessayer.",
       anonymous: "Anonyme",
-      notProvided: "Non fourni"
+      notProvided: "Non fourni",
+      emailInvalid: "Veuillez entrer une adresse e-mail valide"
     }
   };
 
   const t = text[language];
   const tooltip = ratingTooltips[language];
 
+  // Email validation function
+  const isValidEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
   const handleInputChange = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+    
+    // Clear email error when user starts typing again
+    if (field === 'email') {
+      setEmailError('');
+    }
   };
 
   const handleNext = () => {
@@ -127,6 +141,12 @@ const ReviewPage = () => {
   };
 
   const handleSubmit = async () => {
+    // Validate email if not skipped
+    if (!formData.skipEmail && formData.email.trim() && !isValidEmail(formData.email)) {
+      setEmailError(t.emailInvalid);
+      return;
+    }
+
     try {
       console.log('Submitting review:', formData);
       alert(t.alertSuccess);
@@ -138,6 +158,7 @@ const ReviewPage = () => {
         email: '',
         skipEmail: false
       });
+      setEmailError('');
       setCurrentStage(1);
     } catch (error) {
       console.error('Error submitting review:', error);
@@ -147,7 +168,7 @@ const ReviewPage = () => {
 
   const canProceedStage1 = formData.isAnonymous || formData.name.trim();
   const canProceedStage2 = formData.rating && formData.comments.trim();
-  const canSubmit = formData.skipEmail || formData.email.trim();
+  const canSubmit = formData.skipEmail || (formData.email.trim() && isValidEmail(formData.email));
 
   const renderProgressBar = () => (
     <div className="progress-container">
@@ -274,8 +295,9 @@ const ReviewPage = () => {
           value={formData.email}
           onChange={(e) => handleInputChange('email', e.target.value)}
           disabled={formData.skipEmail}
-          className={formData.skipEmail ? 'disabled' : ''}
+          className={`${formData.skipEmail ? 'disabled' : ''} ${emailError ? 'error' : ''}`}
         />
+        {emailError && <div className="error-message">{emailError}</div>}
       </div>
       <div className="form-group">
         <label className="checkbox-label">
@@ -284,7 +306,10 @@ const ReviewPage = () => {
             checked={formData.skipEmail}
             onChange={(e) => {
               handleInputChange('skipEmail', e.target.checked);
-              if (e.target.checked) handleInputChange('email', '');
+              if (e.target.checked) {
+                handleInputChange('email', '');
+                setEmailError('');
+              }
             }}
           />
           <span className="checkbox-text">{t.stage3.skip}</span>
