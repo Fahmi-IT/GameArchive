@@ -34,7 +34,8 @@ const SearchPage = ({ initialSearchQuery, clearInitialSearchQuery }) => {
 
   const text = {
     en: {
-      title: "Search Games",
+      title: "Search",
+      subtitle: "Games", 
       sortBy: "Sort by:",
       sortOptions: {
         "rating-asc": "Aggregated Rating Ascending",
@@ -49,7 +50,8 @@ const SearchPage = ({ initialSearchQuery, clearInitialSearchQuery }) => {
       page: "Page"
     },
     fr: {
-      title: "Rechercher des jeux",
+      title: "Rechercher",
+      subtitle: "des jeux", 
       sortBy: "Trier par :",
       sortOptions: {
         "rating-asc": "Note moyenne croissante",
@@ -126,7 +128,7 @@ const SearchPage = ({ initialSearchQuery, clearInitialSearchQuery }) => {
       <div className="search-results-container">
         <h2 className="search-title">
           <span className="controller-icon">🎮</span>
-          {t.title}
+          {t.title} <span className="highlight">{t.subtitle}</span>
         </h2>
 
         <GameSearch 
