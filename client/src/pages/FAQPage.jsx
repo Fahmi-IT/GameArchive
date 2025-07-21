@@ -13,10 +13,6 @@ const FAQPage = () => {
           a: "IGDB, RAWG, SteamSpy, and other trusted gaming APIs."
         },
         {
-          q: "Can I see pricing?",
-          a: "Currently we're exploring Steam pricing support."
-        },
-        {
           q: "How often is the data updated?",
           a: "Data is fetched live at the time of search."
         },
@@ -44,10 +40,6 @@ const FAQPage = () => {
         {
           q: "D'où viennent les données ?",
           a: "IGDB, RAWG, SteamSpy et d'autres API de jeux fiables."
-        },
-        {
-          q: "Puis-je voir les prix ?",
-          a: "Nous explorons actuellement la prise en charge des prix via Steam."
         },
         {
           q: "À quelle fréquence les données sont-elles mises à jour ?",
