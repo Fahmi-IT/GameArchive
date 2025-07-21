@@ -188,7 +188,7 @@
   font-weight: bold;
   font-size: 0.9rem;
   text-shadow: 0 0 8px rgba(0, 0, 0, 0.5); /* Clearer text shadow */
-  margin-right: 10px;
+  text-align: center;;
 }
 
 .max-indicator {

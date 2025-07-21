@@ -74,13 +74,13 @@ const ComparePage = () => {
     const reviewsRatingsData = [
       {
         metric: 'User Rating',
-        [game1.game.name || 'Game 1']: parseRating(game1.game.aggregated_rating || game1.game.rating),
+        [game1.game.name || 'Game 1']: parseRating(game1.game.aggregated_rating),
         [game2.game.name || 'Game 2']: parseRating(game2.game.aggregated_rating || game2.game.rating)
       },
       {
-        metric: 'Review Score',
-        [game1.game.name || 'Game 1']: parseNumber(game1.game.total_rating) || parseRating(game1.game.aggregated_rating) || 75,
-        [game2.game.name || 'Game 2']: parseNumber(game2.game.total_rating) || parseRating(game2.game.aggregated_rating) || 75
+        metric: 'Metascore',
+        [game1.game.name || 'Game 1']: parseNumber(game1.game.total_rating) || parseRating(game1.game.metascore) || 75,
+        [game2.game.name || 'Game 2']: parseNumber(game2.game.total_rating) || parseRating(game2.game.metascore) || 75
       },
       {
         metric: 'Owners (Millions)',
@@ -104,8 +104,8 @@ const ComparePage = () => {
       },
       {
         subject: 'User Rating',
-        [game1.game.name || 'Game 1']: parseRating(game1.game.aggregated_rating || game1.game.rating) || 75,
-        [game2.game.name || 'Game 2']: parseRating(game2.game.aggregated_rating || game2.game.rating) || 75,
+        [game1.game.name || 'Game 1']: parseRating(game1.game.aggregated_rating) || 75,
+        [game2.game.name || 'Game 2']: parseRating(game2.game.aggregated_rating) || 75,
         fullMark: 100
       }
     ];
