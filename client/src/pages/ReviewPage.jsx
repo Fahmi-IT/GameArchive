@@ -31,7 +31,8 @@ const ReviewPage = () => {
 
   const text = {
     en: {
-      title: "Give Us Feedback!",
+      title: "Give Us",
+      subtitle: "Feedback!", 
       progress: ["Name", "Review", "Contact"],
       stage1: {
         heading: "Tell us your name",
@@ -72,7 +73,8 @@ const ReviewPage = () => {
       emailInvalid: "Please enter a valid email address"
     },
     fr: {
-      title: "Donnez votre avis !",
+      title: "Donnez Votre",
+      subtitle: "Avis!",
       progress: ["Nom", "Avis", "Contact"],
       stage1: {
         heading: "Dites-nous votre nom",
@@ -353,7 +355,7 @@ const ReviewPage = () => {
     <div className="review-page">
       <h2 className="review-title">
         <span className="review-icon">📝</span>
-        {t.title}
+        {t.title} <span clasName="highlight">{t.subtitle}</span>
       </h2>
       <div className="review-container">
         {renderProgressBar()}

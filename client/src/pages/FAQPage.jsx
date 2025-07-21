@@ -6,7 +6,8 @@ const FAQPage = () => {
 
   const text = {
     en: {
-      title: "Frequently Asked Questions",
+      title: "Frequently Asked",
+      subtitle: "Questions",
       questions: [
         {
           q: "Where is the data from?",
@@ -35,7 +36,8 @@ const FAQPage = () => {
       ]
     },
     fr: {
-      title: "Foire Aux Questions",
+      title: "Foire Aux",
+      subtitle: "Questions",
       questions: [
         {
           q: "D'où viennent les données ?",
@@ -72,7 +74,7 @@ const FAQPage = () => {
       <div className="faq-content">
         <h2 className="faq-title">
           <span className="question-icon">❓</span>
-          {title}
+          {title} <span className="highlight">{text[language].subtitle}</span>
         </h2>
 
         <ul className="faq-list">
