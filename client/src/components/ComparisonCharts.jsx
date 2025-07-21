@@ -223,6 +223,8 @@ const ComparisonCharts = ({ chartData, compareList }) => {
 
     const game1Steam = steamSpyData[0].data;
     const game2Steam = steamSpyData[1].data;
+    const metascore1 = compareList[0].metascore || 'N/A';
+    const metascore2 = compareList[1].metascore || 'N/A';
     const game1 = compareList[0].game;
     const game2 = compareList[1].game;
 
@@ -248,8 +250,8 @@ const ComparisonCharts = ({ chartData, compareList }) => {
       },
       {
         metric: t.metascore,
-        [game1Name]: steamSpyData[0].metascore !== 'N/A' ? steamSpyData[0].metascore : 0,
-        [game2Name]: steamSpyData[1].metascore !== 'N/A' ? steamSpyData[1].metascore : 0,
+        [game1Name]: metascore1 !== 'N/A' ? metascore1 : 0,
+        [game2Name]: metascore2 !== 'N/A' ? metascore2 : 0,
         maxValue: 100
       },
       {
