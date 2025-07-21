@@ -355,7 +355,7 @@ const ReviewPage = () => {
     <div className="review-page">
       <h2 className="review-title">
         <span className="review-icon">📝</span>
-        {t.title} <span clasName="highlight">{t.subtitle}</span>
+        {t.title} <span className="highlight">{t.subtitle}</span>
       </h2>
       <div className="review-container">
         {renderProgressBar()}
