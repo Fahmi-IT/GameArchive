@@ -9,7 +9,15 @@
   position: relative;
   z-index: 1;
   animation: fadeInDown 0.8s ease-out;
-  flex-wrap: wrap;
+  /* Removed flex-wrap: wrap to keep items on same line */
+}
+
+.game-search-container form {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  max-width: 400px; /* Add max-width for better control */
 }
 
 /* Input styling */
@@ -46,6 +54,8 @@
   font-size: 0.9rem;
   transition: all 0.3s ease;
   box-shadow: 0 4px 12px rgba(0, 212, 255, 0.15);
+  white-space: nowrap; /* Prevent text wrapping */
+  flex-shrink: 0; /* Prevent button from shrinking */
 }
 
 .game-search-button:hover {
@@ -57,19 +67,36 @@
   transform: translateY(-1px);
 }
 
-/* Responsive adjustments */
+/* Updated responsive adjustments - keep items inline even on mobile */
 @media (max-width: 600px) {
   .game-search-container {
-    flex-direction: column;
-    align-items: stretch;
+    padding: 1rem;
+  }
+
+  .game-search-container form {
+    max-width: 100%;
   }
 
   .game-search-input {
-    width: 100%;
+    width: 200px; /* Smaller but still maintains inline layout */
+    min-width: 150px;
   }
 
   .game-search-button {
-    width: 100%;
+    padding: 0.75rem 1rem; /* Slightly smaller padding on mobile */
+    font-size: 0.8rem;
+  }
+}
+
+/* Even smaller screens */
+@media (max-width: 400px) {
+  .game-search-input {
+    width: 150px;
+    min-width: 120px;
+  }
+
+  .game-search-button {
+    padding: 0.75rem 0.8rem;
   }
 }
 

@@ -147,7 +147,7 @@ const ComparisonCharts = ({ chartData, compareList }) => {
 
             if (appId) {
               // Fetch SteamSpy data
-              const res = await fetch(`/api/steamspy/${appId}`);
+              const res = await fetch(`/api/steamspy?appid=${appId}`);
               const data = await res.json();
               return {
                 steamAppId: appId,
