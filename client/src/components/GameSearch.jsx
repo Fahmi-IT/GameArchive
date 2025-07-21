@@ -54,6 +54,7 @@ const GameSearch = ({ onResults, initialQuery }) => {
     setIsLoading(true);
     try {
       const response = await axios.get(`/api/igdb?title=${encodeURIComponent(query)}`);
+      console.log('Suggestions Response:', response.data);
       const topResults = response.data.slice(0, 5);
       setSuggestions(topResults);
       setShowSuggestions(true);
