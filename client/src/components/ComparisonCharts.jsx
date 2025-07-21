@@ -223,8 +223,8 @@ const ComparisonCharts = ({ chartData, compareList }) => {
 
     const game1Steam = steamSpyData[0].data;
     const game2Steam = steamSpyData[1].data;
-    const metascore1 = compareList[0].metascore || 'N/A';
-    const metascore2 = compareList[1].metascore || 'N/A';
+    const metascore1 = parseInt(compareList[0].metascore) || 0;
+    const metascore2 = parseInt(compareList[1].metascore) || 0;
     const game1 = compareList[0].game;
     const game2 = compareList[1].game;
 
