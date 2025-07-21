@@ -42,7 +42,7 @@ const GamePopup = ({ game, onClose }) => {
       addedToCompare: 'Game added to compare list!',
     },
     fr: {
-      tabs: ['Vue d’ensemble', 'Stats Steam', 'Comparer'],
+      tabs: ['Vue d\'ensemble', 'Stats Steam', 'Comparer'],
       release: 'Sortie',
       rating: 'Note utilisateur',
       esrb: 'ESRB',
@@ -210,28 +210,32 @@ const GamePopup = ({ game, onClose }) => {
       <div className="game-popup" onClick={(e) => e.stopPropagation()}>
         <button className="popup-close" onClick={onClose}>×</button>
 
-        {coverUrl ? (
-          <img src={coverUrl} alt={`${game.name} Cover`} className="popup-cover" />
-        ) : (
-          <div className="popup-cover-placeholder">{t.noImage}</div>
-        )}
+        <div className="popup-left">
+          {coverUrl ? (
+            <img src={coverUrl} alt={`${game.name} Cover`} className="popup-cover" />
+          ) : (
+            <div className="popup-cover-placeholder">{t.noImage}</div>
+          )}
+        </div>
 
-        <h2 className="popup-title">{game.name}</h2>
+        <div className="popup-right">
+          <h2 className="popup-title">{game.name}</h2>
 
-        <div className="popup-tabs-container">
-          <div className="tab-content-area">
-            {tabs[activeTab].content}
-          </div>
+          <div className="popup-tabs-container">
+            <div className="tab-content-area">
+              {tabs[activeTab].content}
+            </div>
 
-          <div className="tab-navigation">
-            {tabs.map((tab, index) => (
-              <button
-                key={index}
-                className={`tab-orb ${activeTab === index ? 'active' : ''}`}
-                onClick={() => setActiveTab(index)}
-                title={tab.name}
-              />
-            ))}
+            <div className="tab-navigation">
+              {tabs.map((tab, index) => (
+                <button
+                  key={index}
+                  className={`tab-orb ${activeTab === index ? 'active' : ''}`}
+                  onClick={() => setActiveTab(index)}
+                  title={tab.name}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </div>
