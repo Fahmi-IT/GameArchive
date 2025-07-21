@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import axios from 'axios';
 import "./css/GameSearch.css";
 import { useLanguage } from '../contexts/LanguageContext'; // Import useLanguage
@@ -53,7 +53,7 @@ const GameSearch = ({ onResults, initialQuery }) => {
     
     setIsLoading(true);
     try {
-      const response = await axios.get(`http://localhost:5000/api/igdb/${query}`);
+      const response = await axios.get(`/api/igdb?title=${encodeURIComponent(query)}`);
       const topResults = response.data.slice(0, 5);
       setSuggestions(topResults);
       setShowSuggestions(true);
@@ -67,20 +67,20 @@ const GameSearch = ({ onResults, initialQuery }) => {
     }
   };
 
-  const handleSearch = async (searchQuery = title) => {
+  const handleSearch = useCallback(async (searchQuery = title) => {
     const queryToUse = searchQuery || title;
     if (!queryToUse.trim()) return;
     
     setShowSuggestions(false);
     
     try {
-      const igdb = await axios.get(`http://localhost:5000/api/igdb/${queryToUse}`);
+      const igdb = await axios.get(`/api/igdb?title=${encodeURIComponent(queryToUse)}`);
       onResults(igdb.data, queryToUse);
     } catch (err) {
       console.error(err);
       onResults([], queryToUse);
     }
-  };
+  }, [title, onResults]);
 
   useEffect(() => {
     if (initialQuery && initialQuery.trim()) {

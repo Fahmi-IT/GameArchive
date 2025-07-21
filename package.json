@@ -1,7 +1,12 @@
 {
-  "name": "game-stats-dashboard",
+  "name": "game-search-app",
+  "version": "1.0.0",
   "scripts": {
-    "dev": "concurrently \"npm start --prefix client\" \"node server/index.js\""
+    "build": "cd client && npm install && npm run build",
+    "dev": "concurrently \"cd client && npm start\" \"cd server && npm start\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.0"
   },
   "dependencies": {
     "@nivo/bar": "^0.99.0",
@@ -16,8 +21,5 @@
     "react-router-dom": "^7.7.0",
     "recharts": "^3.1.0",
     "victory": "^37.3.6"
-  },
-  "devDependencies": {
-    "gh-pages": "^6.3.0"
   }
 }
