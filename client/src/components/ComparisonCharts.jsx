@@ -1,12 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import './css/ComparisonCharts.css';
-import { useLanguage } from '../contexts/LanguageContext'; // Import useLanguage
+import { useLanguage } from '../contexts/LanguageContext';
 
 const ComparisonCharts = ({ chartData, compareList }) => {
   const [steamSpyData, setSteamSpyData] = useState({});
   const [loading, setLoading] = useState(true);
   const [reviewsViewMode, setReviewsViewMode] = useState('total'); // 'total' or 'percentage'
-  const { language } = useLanguage(); // Use the language context
+  const { language } = useLanguage();
+
+  // Define distinct colors for each game
+  const gameColors = {
+    game1: {
+      primary: '#00d4ff', // Cyan blue
+      secondary: '#0ea5e9', // Sky blue
+      gradient: 'linear-gradient(135deg, #00d4ff, #0ea5e9)'
+    },
+    game2: {
+      primary: '#8b5cf6', // Purple
+      secondary: '#a855f7', // Violet
+      gradient: 'linear-gradient(135deg, #8b5cf6, #a855f7)'
+    }
+  };
 
   // Define text strings for localization
   const text = {
@@ -14,13 +28,15 @@ const ComparisonCharts = ({ chartData, compareList }) => {
       loadingSteamData: "Loading enhanced Steam data...",
       gameStatisticsComparison: "📊 Game Statistics Comparison",
       vsText: "VS",
-      reviewsPerformanceMetrics: "📈 Reviews & Performance Metrics",
-      overallPerformanceComparison: "🎯 Overall Performance Comparison",
+      reviewsRatingsMetrics: "📈 Reviews & Ratings Metrics",
+      costPerformanceMetrics: "💰 Cost & Performance Metrics",
       detailedGameInformation: "🎮 Detailed Game Information",
-      steamReviews: "Steam Reviews",
-      avgPlaytimeHrs: "Avg Playtime (hrs)",
+      userScore: "User Score",
       metascore: "Metascore",
+      steamReviewsRatio: "Steam Reviews (Positive/Negative)",
+      avgPlaytimeHrs: "Average Playtime (hours)",
       steamPrice: "Steam Price ($)",
+      costPerHour: "Cost per Hour ($)",
       totalNumbers: "Total Numbers",
       percentage: "Percentage",
       positive: "✓ Positive",
@@ -30,14 +46,12 @@ const ComparisonCharts = ({ chartData, compareList }) => {
       tie: "Tie",
       steamId: "Steam ID",
       igdbRating: "IGDB Rating",
-      metascoreShort: "Metascore", // Shorter for detailed card
-      steamPriceShort: "Steam Price", // Shorter for detailed card
       developer: "Developer",
       publisher: "Publisher",
       steamPositive: "Steam Positive",
       steamNegative: "Steam Negative",
       owners: "Owners",
-      avgPlaytime: "Avg Playtime", // Shorter for detailed card
+      avgPlaytime: "Avg Playtime",
       genres: "Genres",
       notSpecified: "Not specified",
       steamData: "Steam Data",
@@ -48,13 +62,15 @@ const ComparisonCharts = ({ chartData, compareList }) => {
       loadingSteamData: "Chargement des données Steam améliorées...",
       gameStatisticsComparison: "📊 Comparaison des Statistiques de Jeux",
       vsText: "CONTRE",
-      reviewsPerformanceMetrics: "📈 Avis & Métriques de Performance",
-      overallPerformanceComparison: "🎯 Comparaison des Performances Globales",
+      reviewsRatingsMetrics: "📈 Avis & Métriques de Notes",
+      costPerformanceMetrics: "💰 Coût & Métriques de Performance",
       detailedGameInformation: "🎮 Informations Détaillées du Jeu",
-      steamReviews: "Avis Steam",
-      avgPlaytimeHrs: "Temps de Jeu Moyen (h)",
+      userScore: "Score Utilisateur",
       metascore: "Metascore",
+      steamReviewsRatio: "Avis Steam (Positif/Négatif)",
+      avgPlaytimeHrs: "Temps de Jeu Moyen (heures)",
       steamPrice: "Prix Steam ($)",
+      costPerHour: "Coût par Heure ($)",
       totalNumbers: "Nombres Totaux",
       percentage: "Pourcentage",
       positive: "✓ Positif",
@@ -64,8 +80,6 @@ const ComparisonCharts = ({ chartData, compareList }) => {
       tie: "Égalité",
       steamId: "ID Steam",
       igdbRating: "Note IGDB",
-      metascoreShort: "Metascore",
-      steamPriceShort: "Prix Steam",
       developer: "Développeur",
       publisher: "Éditeur",
       steamPositive: "Positifs Steam",
@@ -80,7 +94,7 @@ const ComparisonCharts = ({ chartData, compareList }) => {
     }
   };
 
-  const t = text[language]; // Get the translation object for the current language
+  const t = text[language];
 
   console.log(chartData);
   console.log(compareList);
@@ -99,7 +113,7 @@ const ComparisonCharts = ({ chartData, compareList }) => {
             let appId = steamAppId;
             let metascore = 'N/A';
 
-            // If we don't have a Steam app ID, search for it (similar to GamePopup.jsx)
+            // If we don't have a Steam app ID, search for it
             if (!appId) {
               const searchUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(`https://store.steampowered.com/api/storesearch/?term=${encodeURIComponent(game.name)}&l=english&cc=US`)}`;
               const searchResponse = await fetch(searchUrl);
@@ -160,7 +174,7 @@ const ComparisonCharts = ({ chartData, compareList }) => {
                 steamAppId: null,
                 gameName: game.name,
                 metascore: 'N/A',
-                data: { error: t.noSteamAppIdFound } // Localized error
+                data: { error: t.noSteamAppIdFound }
               };
             }
           } catch (err) {
@@ -169,7 +183,7 @@ const ComparisonCharts = ({ chartData, compareList }) => {
               steamAppId: steamAppId || null,
               gameName: game.name,
               metascore: 'N/A',
-              data: { error: t.failedToFetchSteamData } // Localized error
+              data: { error: t.failedToFetchSteamData }
             };
           }
         });
@@ -189,7 +203,7 @@ const ComparisonCharts = ({ chartData, compareList }) => {
     };
 
     fetchAllSteamSpyData();
-  }, [compareList, t.failedToFetchSteamData, t.noSteamAppIdFound]); // Ensure 't' is NOT in this array.
+  }, [compareList, t.failedToFetchSteamData, t.noSteamAppIdFound]);
 
   if (!chartData || !compareList || compareList.length !== 2) {
     return null;
@@ -201,29 +215,45 @@ const ComparisonCharts = ({ chartData, compareList }) => {
   // Enhanced chart data with SteamSpy information
   const getEnhancedChartData = () => {
     if (loading || !steamSpyData[0] || !steamSpyData[1]) {
-      return chartData;
+      return {
+        reviewsRatingsData: [],
+        costPerformanceData: []
+      };
     }
 
     const game1Steam = steamSpyData[0].data;
     const game2Steam = steamSpyData[1].data;
+    const game1 = compareList[0].game;
+    const game2 = compareList[1].game;
 
-    // Enhanced reviews and ratings data
+    // Calculate playtime in hours
     const game1Playtime = game1Steam.average_forever ? (game1Steam.average_forever / 60) : 0;
     const game2Playtime = game2Steam.average_forever ? (game2Steam.average_forever / 60) : 0;
-    
-    const enhancedReviewsData = [
-      ...chartData.reviewsRatingsData.map(item => {
-        // Ensure user ratings and review scores are out of 100
-        if (item.metric.toLowerCase().includes('rating') || item.metric.toLowerCase().includes('score')) {
-          return {
-            ...item,
-            maxValue: 100
-          };
-        }
-        return item;
-      }),
+
+    // Calculate Steam prices in dollars
+    const game1Price = game1Steam.price ? (game1Steam.price / 100) : 0;
+    const game2Price = game2Steam.price ? (game2Steam.price / 100) : 0;
+
+    // Calculate cost per hour
+    const game1CostPerHour = game1Price > 0 && game1Playtime > 0 ? game1Price / game1Playtime : 0;
+    const game2CostPerHour = game2Price > 0 && game2Playtime > 0 ? game2Price / game2Playtime : 0;
+
+    // Reviews and Ratings Data (First Graph)
+    const reviewsRatingsData = [
       {
-        metric: t.steamReviews, // Localized
+        metric: t.userScore,
+        [game1Name]: game1.user_rating || 0,
+        [game2Name]: game2.user_rating || 0,
+        maxValue: 100
+      },
+      {
+        metric: t.metascore,
+        [game1Name]: steamSpyData[0].metascore !== 'N/A' ? steamSpyData[0].metascore : 0,
+        [game2Name]: steamSpyData[1].metascore !== 'N/A' ? steamSpyData[1].metascore : 0,
+        maxValue: 100
+      },
+      {
+        metric: t.steamReviewsRatio,
         type: 'stacked',
         [game1Name]: {
           positive: game1Steam.positive || 0,
@@ -235,44 +265,40 @@ const ComparisonCharts = ({ chartData, compareList }) => {
           negative: game2Steam.negative || 0,
           total: (game2Steam.positive || 0) + (game2Steam.negative || 0)
         }
-      },
-      {
-        metric: t.avgPlaytimeHrs, // Localized
-        [game1Name]: parseFloat(game1Playtime.toFixed(2)),
-        [game2Name]: parseFloat(game2Playtime.toFixed(2)),
-        maxValue: Math.max(game1Playtime, game2Playtime)
       }
     ];
 
-    // Enhanced radar data
-    const enhancedRadarData = [
-      ...chartData.radarData,
+    // Cost and Performance Data (Second Graph)
+    const costPerformanceData = [
       {
-        subject: t.metascore, // Localized
-        [game1Name]: steamSpyData[0].metascore !== 'N/A' ? steamSpyData[0].metascore : 0,
-        [game2Name]: steamSpyData[1].metascore !== 'N/A' ? steamSpyData[1].metascore : 0
-      },
-      {
-        subject: t.steamPrice, // Localized
-        [game1Name]: game1Steam.price ? (game1Steam.price / 100) : 0,
-        [game2Name]: game2Steam.price ? (game2Steam.price / 100) : 0
-      },
-      {
-        subject: t.avgPlaytimeHrs, // Localized
+        metric: t.avgPlaytimeHrs,
         [game1Name]: parseFloat(game1Playtime.toFixed(2)),
-        [game2Name]: parseFloat(game2Playtime.toFixed(2))
+        [game2Name]: parseFloat(game2Playtime.toFixed(2)),
+        maxValue: Math.max(game1Playtime, game2Playtime)
+      },
+      {
+        metric: t.steamPrice,
+        [game1Name]: parseFloat(game1Price.toFixed(2)),
+        [game2Name]: parseFloat(game2Price.toFixed(2)),
+        maxValue: Math.max(game1Price, game2Price)
+      },
+      {
+        metric: t.costPerHour,
+        [game1Name]: parseFloat(game1CostPerHour.toFixed(2)),
+        [game2Name]: parseFloat(game2CostPerHour.toFixed(2)),
+        maxValue: Math.max(game1CostPerHour, game2CostPerHour)
       }
     ];
 
     return {
-      reviewsRatingsData: enhancedReviewsData,
-      radarData: enhancedRadarData
+      reviewsRatingsData,
+      costPerformanceData
     };
   };
 
   const enhancedChartData = getEnhancedChartData();
 
-  // Custom Bar Chart Component - Fixed to receive props
+  // Custom Bar Chart Component
   const CustomBarChart = ({ data, title, reviewsViewMode, setReviewsViewMode }) => {
     return (
       <div className="custom-bar-chart">
@@ -285,13 +311,13 @@ const ComparisonCharts = ({ chartData, compareList }) => {
               className={`toggle-btn ${reviewsViewMode === 'total' ? 'active' : ''}`}
               onClick={() => setReviewsViewMode('total')}
             >
-              {t.totalNumbers} {/* Localized */}
+              {t.totalNumbers}
             </button>
             <button 
               className={`toggle-btn ${reviewsViewMode === 'percentage' ? 'active' : ''}`}
               onClick={() => setReviewsViewMode('percentage')}
             >
-              {t.percentage} {/* Localized */}
+              {t.percentage}
             </button>
           </div>
         )}
@@ -344,8 +370,8 @@ const ComparisonCharts = ({ chartData, compareList }) => {
                               </div>
                             </div>
                             <div className="stacked-legend">
-                              <span className="legend-item positive-legend">{t.positive}</span> {/* Localized */}
-                              <span className="legend-item negative-legend">{t.negative}</span> {/* Localized */}
+                              <span className="legend-item positive-legend">{t.positive}</span>
+                              <span className="legend-item negative-legend">{t.negative}</span>
                             </div>
                           </div>
                         </div>
@@ -355,7 +381,7 @@ const ComparisonCharts = ({ chartData, compareList }) => {
                 </div>
               );
             } else {
-              // Regular bar chart
+              // Regular bar chart with distinct colors for each game
               const maxValue = item.maxValue || Math.max(
                 item[game1Name] || 0, 
                 item[game2Name] || 0
@@ -372,18 +398,22 @@ const ComparisonCharts = ({ chartData, compareList }) => {
                           className="bar bar-game1" 
                           style={{ 
                             width: `${maxValue > 0 ? (item[game1Name] / maxValue) * 100 : 0}%`,
-                            minWidth: '20px'
+                            minWidth: '20px',
+                            background: gameColors.game1.gradient
                           }}
                         >
                           <span className="bar-value">
-                            {item.metric.includes(t.avgPlaytime) // Localized
+                            {item.metric.includes(t.avgPlaytimeHrs)
                               ? `${item[game1Name]?.toFixed(2)}h`
-                              : item.metric.toLowerCase().includes('rating') || item.metric.toLowerCase().includes('score')
+                              : item.metric.includes(t.steamPrice)
+                              ? `$${item[game1Name]?.toFixed(2)}`
+                              : item.metric.includes(t.costPerHour)
+                              ? `$${item[game1Name]?.toFixed(2)}`
+                              : item.metric.toLowerCase().includes('score')
                               ? `${item[game1Name]?.toFixed(1)}/100`
                               : item[game1Name]?.toLocaleString?.() || item[game1Name]?.toFixed?.(1) || 0}
                           </span>
                         </div>
-                        {(item.metric.toLowerCase().includes('rating') || item.metric.toLowerCase().includes('score'))}
                       </div>
                     </div>
                     <div className="bar-item">
@@ -393,18 +423,22 @@ const ComparisonCharts = ({ chartData, compareList }) => {
                           className="bar bar-game2" 
                           style={{ 
                             width: `${maxValue > 0 ? (item[game2Name] / maxValue) * 100 : 0}%`,
-                            minWidth: '20px'
+                            minWidth: '20px',
+                            background: gameColors.game2.gradient
                           }}
                         >
                           <span className="bar-value">
-                            {item.metric.includes(t.avgPlaytime) // Localized
+                            {item.metric.includes(t.avgPlaytimeHrs)
                               ? `${item[game2Name]?.toFixed(2)}h`
-                              : item.metric.toLowerCase().includes('rating') || item.metric.toLowerCase().includes('score')
+                              : item.metric.includes(t.steamPrice)
+                              ? `$${item[game2Name]?.toFixed(2)}`
+                              : item.metric.includes(t.costPerHour)
+                              ? `$${item[game2Name]?.toFixed(2)}`
+                              : item.metric.toLowerCase().includes('score')
                               ? `${item[game2Name]?.toFixed(1)}/100`
                               : item[game2Name]?.toLocaleString?.() || item[game2Name]?.toFixed?.(1) || 0}
                           </span>
                         </div>
-                        {(item.metric.toLowerCase().includes('rating') || item.metric.toLowerCase().includes('score'))}
                       </div>
                     </div>
                   </div>
@@ -417,77 +451,19 @@ const ComparisonCharts = ({ chartData, compareList }) => {
     );
   };
 
-  // Custom Radar Chart Component (simplified as comparison table)
-  const CustomRadarComparison = ({ data, title }) => {
-    return (
-      <div className="custom-radar-comparison">
-        <h3 className="chart-title">{title}</h3>
-        <div className="comparison-table">
-          <div className="comparison-header">
-            <div className="metric-header">{t.metric}</div> {/* Localized */}
-            <div className="game-header game1-header">{game1Name}</div>
-            <div className="game-header game2-header">{game2Name}</div>
-            <div className="winner-header">{t.better}</div> {/* Localized */}
-          </div>
-          {data.map((item, index) => {
-            const game1Value = item[game1Name] || 0;
-            const game2Value = item[game2Name] || 0;
-            const winner = game1Value > game2Value ? game1Name : 
-                          game2Value > game1Value ? game2Name : t.tie; // Localized
-            
-            return (
-              <div key={index} className="comparison-row">
-                <div className="metric-cell">{item.subject}</div>
-                <div className="value-cell game1-cell">
-                  <div className="value-bar">
-                    <div 
-                      className="value-fill game1-fill" 
-                      style={{ width: `${Math.max(...data.map(d => Math.max(d[game1Name] || 0, d[game2Name] || 0))) > 0 ? (game1Value / Math.max(...data.map(d => Math.max(d[game1Name] || 0, d[game2Name] || 0)))) * 100 : 0}%` }}
-                    />
-                    <span className="value-text">
-                      {item.subject.includes(t.steamPriceShort) ? `$${game1Value}` : // Localized
-                       item.subject.includes(t.avgPlaytime) ? `${game1Value}h` : // Localized
-                       `${game1Value.toFixed ? game1Value.toFixed(1) : game1Value}`}
-                    </span>
-                  </div>
-                </div>
-                <div className="value-cell game2-cell">
-                  <div className="value-bar">
-                    <div 
-                      className="value-fill game2-fill" 
-                      style={{ width: `${Math.max(...data.map(d => Math.max(d[game1Name] || 0, d[game2Name] || 0))) > 0 ? (game2Value / Math.max(...data.map(d => Math.max(d[game1Name] || 0, d[game2Name] || 0)))) * 100 : 0}%` }}
-                    />
-                    <span className="value-text">
-                      {item.subject.includes(t.steamPriceShort) ? `$${game2Value}` : // Localized
-                       item.subject.includes(t.avgPlaytime) ? `${game2Value}h` : // Localized
-                       `${game2Value.toFixed ? game2Value.toFixed(1) : game2Value}`}
-                    </span>
-                  </div>
-                </div>
-                <div className={`winner-cell ${winner === t.tie ? 'tie' : winner === game1Name ? 'game1-wins' : 'game2-wins'}`}>
-                  {winner === t.tie ? '🤝' : winner === game1Name ? '🏆' : '🥈'}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-    );
-  };
-
   if (loading) {
     return (
       <div className="charts-container">
         <div className="game-comparison-header">
-          <h2>{t.gameStatisticsComparison}</h2> {/* Localized */}
+          <h2>{t.gameStatisticsComparison}</h2>
           <div className="games-being-compared">
             <span className="game-name">{game1Name}</span>
-            <span className="vs-text">{t.vsText}</span> {/* Localized */}
+            <span className="vs-text">{t.vsText}</span>
             <span className="game-name">{game2Name}</span>
           </div>
         </div>
         <div className="loading-container">
-          <p><em>{t.loadingSteamData}</em></p> {/* Localized */}
+          <p><em>{t.loadingSteamData}</em></p>
         </div>
       </div>
     );
@@ -495,21 +471,30 @@ const ComparisonCharts = ({ chartData, compareList }) => {
 
   return (
     <div className="charts-container">
-      {/* Custom Bar Chart - Now passing the required props */}
+      <div className="game-comparison-header">
+        <h2>{t.gameStatisticsComparison}</h2>
+        <div className="games-being-compared">
+          <span className="game-name" style={{ borderColor: gameColors.game1.primary }}>{game1Name}</span>
+          <span className="vs-text">{t.vsText}</span>
+          <span className="game-name" style={{ borderColor: gameColors.game2.primary }}>{game2Name}</span>
+        </div>
+      </div>
+
+      {/* First Chart: Reviews & Ratings */}
       <div className="chart-section">
         <CustomBarChart 
           data={enhancedChartData.reviewsRatingsData} 
-          title={t.reviewsPerformanceMetrics} // Localized
+          title={t.reviewsRatingsMetrics}
           reviewsViewMode={reviewsViewMode}
           setReviewsViewMode={setReviewsViewMode}
         />
       </div>
 
-      {/* Custom Radar/Comparison Chart */}
+      {/* Second Chart: Cost & Performance */}
       <div className="chart-section">
-        <CustomRadarComparison 
-          data={enhancedChartData.radarData} 
-          title={t.overallPerformanceComparison} // Localized
+        <CustomBarChart 
+          data={enhancedChartData.costPerformanceData} 
+          title={t.costPerformanceMetrics}
         />
       </div>
     </div>
