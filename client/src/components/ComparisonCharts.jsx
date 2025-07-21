@@ -499,15 +499,6 @@ const ComparisonCharts = ({ chartData, compareList }) => {
 
   return (
     <div className="charts-container">
-      <div className="game-comparison-header">
-        <h2>{t.gameStatisticsComparison}</h2> {/* Localized */}
-        <div className="games-being-compared">
-          <span className="game-name">{game1Name}</span>
-          <span className="vs-text">{t.vsText}</span> {/* Localized */}
-          <span className="game-name">{game2Name}</span>
-        </div>
-      </div>
-
       {/* Custom Bar Chart - Now passing the required props */}
       <div className="chart-section">
         <CustomBarChart 
